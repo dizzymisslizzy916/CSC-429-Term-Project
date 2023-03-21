@@ -157,16 +157,16 @@ public class Clerk implements IView, IModel
 		
 	}
 	
-	private void createAndShowInsertBookView()
+	private void createAndShowInsertScoutView()
 	{
-		Scene currentScene = (Scene)myViews.get("InsertBookView");
+		Scene currentScene = (Scene)myViews.get("InsertScoutView");
 		
 		if (currentScene == null)
 		{
 			
-			View newView = LibraryViewFactory.createView("InsertBookView", this); // USE VIEW FACTORY
+			View newView = LibraryViewFactory.createView("InsertScoutView", this); // USE VIEW FACTORY
 			currentScene = new Scene(newView);
-			myViews.put("InsertBookView", currentScene);
+			myViews.put("InsertScoutView", currentScene);
 		}
 				
 
