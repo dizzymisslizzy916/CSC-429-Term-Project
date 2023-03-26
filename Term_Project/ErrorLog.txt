@@ -8,3 +8,7 @@
 [3/2/23 1:42 PM]|InsertPatronTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for>
 [3/2/23 1:43 PM]|InsertPatronTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for>
 [3/3/23 2:29 PM]|InsertPatronTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for>
+[3/26/23 12:08 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[com.mysql.jdbc.Driver]>
+[3/26/23 12:09 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[com.mysql.jdbc.Driver]>
+[3/26/23 12:11 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[com.mysql.jdbc.Driver]>
+[3/26/23 10:27 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[com.mysql.jdbc.Driver]>
