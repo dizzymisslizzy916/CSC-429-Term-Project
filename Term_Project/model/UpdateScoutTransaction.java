@@ -15,7 +15,7 @@ import userinterface.View;
 import userinterface.ViewFactory;
 
 //==============================================================
-public class ScoutUpdateTransaction extends Transaction
+public class UpdateScoutTransaction extends Transaction
 {
 
 	protected UpdateScoutTransaction() throws Exception {
@@ -107,9 +107,9 @@ public class ScoutUpdateTransaction extends Transaction
 		if (currentScene == null)
 		{
 			// create our initial view
-			View newView = ViewFactory.createView("InsertScoutView", this);
+			View newView = ViewFactory.createView("UpdateScoutView", this);
 			currentScene = new Scene(newView);
-			myViews.put("InsertScoutView", currentScene);
+			myViews.put("UpdateScoutView", currentScene);
 
 			return currentScene;
 		}
