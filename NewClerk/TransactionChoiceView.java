@@ -87,14 +87,6 @@ public class TransactionChoiceView extends View
 		titleText.setFill(Color.DARKGREEN);
 		container.getChildren().add(titleText);
 
-		String accountHolderGreetingName = (String)myModel.getState("Name");
-		Text welcomeText = new Text("Welcome, " + accountHolderGreetingName + "!");
-		welcomeText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-		welcomeText.setWrappingWidth(300);
-		welcomeText.setTextAlignment(TextAlignment.CENTER);
-		welcomeText.setFill(Color.DARKGREEN);
-		container.getChildren().add(welcomeText);
-
 		Text inquiryText = new Text("What do you wish to do today?");
 		inquiryText.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		inquiryText.setWrappingWidth(300);
@@ -116,13 +108,13 @@ public class TransactionChoiceView extends View
 		// create the buttons, listen for events, add them to the container
 		HBox dCont = new HBox(10);
 		dCont.setAlignment(Pos.CENTER);
-		depositButton = new Button("Deposit");
+		depositButton = new Button("AddScout");
 		depositButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		depositButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("Deposit", null);    
+       		     	myModel.stateChangeRequest("AddScout", null);
             	     }
         	});
 		dCont.getChildren().add(depositButton);
@@ -131,28 +123,118 @@ public class TransactionChoiceView extends View
 
 		HBox wCont = new HBox(10);
 		wCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("Withdraw");
+		withdrawButton = new Button("AddTree");
 		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("Withdraw", null);    
+       		     	myModel.stateChangeRequest("AddTree", null);
             	     }
         	});
 		wCont.getChildren().add(withdrawButton);
 
 		container.getChildren().add(wCont);
 
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("AddTreeType");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("AddTreeType", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("UpdateTreeType");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("UpdateTreeType", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("UpdateScout");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("UpdateScout", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("SellTree");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("SellTree", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("RemoveTree");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("RemoveTree", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
+		HBox wCont = new HBox(10);
+		wCont.setAlignment(Pos.CENTER);
+		withdrawButton = new Button("RemoveScout");
+		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("RemoveScout", null);
+			}
+		});
+		wCont.getChildren().add(withdrawButton);
+
+		container.getChildren().add(wCont);
+
 		HBox tCont = new HBox(10);
 		tCont.setAlignment(Pos.CENTER);
-		transferButton = new Button("Transfer");
+		transferButton = new Button("StartShift");
 		transferButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		transferButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("Transfer", null);    
+       		     	myModel.stateChangeRequest("StartShift", null);
             	     }
         	});
 		tCont.getChildren().add(transferButton);
@@ -161,33 +243,18 @@ public class TransactionChoiceView extends View
 
 		HBox biCont = new HBox(10);
 		biCont.setAlignment(Pos.CENTER);
-		balanceInquiryButton = new Button("Balance Inquiry");
+		balanceInquiryButton = new Button("EndShift");
 		balanceInquiryButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		balanceInquiryButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("BalanceInquiry", null);    
+       		     	myModel.stateChangeRequest("EndShift", null);
             	     }
         	});
 		biCont.getChildren().add(balanceInquiryButton);
 
 		container.getChildren().add(biCont);
-
-		HBox iscCont = new HBox(10);
-		iscCont.setAlignment(Pos.CENTER);
-		imposeServiceChargeButton = new Button("Impose Service Charge");
-		imposeServiceChargeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		imposeServiceChargeButton.setOnAction(new EventHandler<ActionEvent>() {
-
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	 myModel.stateChangeRequest("ImposeServiceCharge", null);
-            	     }
-        	});
-		iscCont.getChildren().add(imposeServiceChargeButton);
-
-		container.getChildren().add(iscCont);
 
 		HBox doneCont = new HBox(10);
 		doneCont.setAlignment(Pos.CENTER);
@@ -252,5 +319,4 @@ public class TransactionChoiceView extends View
 		statusLog.clearErrorMessage();
 	}
 }
-
 
