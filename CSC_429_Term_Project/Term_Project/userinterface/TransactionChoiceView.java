@@ -43,6 +43,8 @@ public class TransactionChoiceView extends View
 	private Button endShift;
 	private Button sellTree;
 
+	private MessageView statusLog;
+
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
 	public TransactionChoiceView(IModel clerk)

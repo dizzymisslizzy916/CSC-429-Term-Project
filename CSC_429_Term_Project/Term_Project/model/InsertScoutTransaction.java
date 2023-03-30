@@ -106,7 +106,7 @@ public class InsertScoutTransaction extends Transaction
 		if (currentScene == null)
 		{
 			// create our initial view
-			View newView = ViewFactory.createView("InsertScoutTransactionView", this);
+			View newView = ViewFactory.createView("ScoutInfoEntryView", this);
 			currentScene = new Scene(newView);
 			myViews.put("InsertScoutTransactionView", currentScene);
 

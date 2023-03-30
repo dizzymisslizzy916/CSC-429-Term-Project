@@ -4,9 +4,7 @@ import impresario.IModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.text.Text;
-import model.Scout;
 
 import java.io.File;
 import java.io.IOException;

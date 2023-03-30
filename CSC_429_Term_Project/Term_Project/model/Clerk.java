@@ -154,7 +154,7 @@ public class Clerk implements IView, IModel{
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("InsertScoutTransactionView", this); // USE VIEW FACTORY
+            View newView = ViewFactory.createView("ScoutInfoEntryView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
             myViews.put("InsertScoutTransactionView", currentScene);
         }

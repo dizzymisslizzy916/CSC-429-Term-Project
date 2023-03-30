@@ -44,7 +44,7 @@ public class DeleteScoutConfirmView extends View{
         String lastName = (String) scout.getState("lastName");
         name.setText(firstName + " " + middleName + " " + lastName);
         email.setText((String) scout.getState("email"));
-        troopID.setText((String) scout.getState("troopID"));
+        troopID.setText((String) scout.getState("troopId"));
         phoneNumber.setText((String) scout.getState("phoneNumber"));
         dateOfBirth.setText(((String) scout.getState("dateOfBirth")));
 

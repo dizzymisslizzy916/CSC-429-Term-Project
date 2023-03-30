@@ -1,5 +1,6 @@
 package userinterface;
 
+import Utilities.UIUtils;
 import impresario.IModel;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -50,69 +51,24 @@ public class UpdateScoutView extends View{
         Button submit = (Button) root.lookup("#submitButton");
         Button done = (Button) root.lookup("#doneButton");
 
-        troopID.textProperty().addListener((obs, oldVal, newVal) -> {
-            int position = troopID.getCaretPosition();
-            if (newVal.length() > 10) {
-                Platform.runLater(() -> {
-                    troopID.setText(oldVal);
-                    troopID.positionCaret(position);
-                });
-            }
-        });
+        //setting up proper restrictions for text fields
+        UIUtils.limitLength(troopID, 10);
 
+        UIUtils.limitToDigits(phoneNum1);
+        UIUtils.limitLength(phoneNum1, 3);
+
+        UIUtils.limitToDigits(phoneNum2);
+        UIUtils.limitLength(phoneNum2, 3);
+
+        UIUtils.limitToDigits(phoneNum3);
+        UIUtils.limitLength(phoneNum3, 4);
+
+        //restricting date to be today or earlier
         dateOfBirth.setDayCellFactory(param -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 setDisable(empty || date.compareTo(LocalDate.now()) > 0);
-            }
-        });
-
-        phoneNum1.textProperty().addListener((obs, oldVal, newVal) -> {
-            int position = phoneNum1.getCaretPosition();
-            if (!newVal.matches("\\d*")) {
-                Platform.runLater(() -> {
-                    phoneNum1.setText(newVal.replaceAll("[^\\d]", ""));
-                    phoneNum1.positionCaret(position);
-                });
-            }
-            if (newVal.length() > 3) {
-                Platform.runLater(() -> {
-                    phoneNum1.setText(oldVal);
-                    phoneNum1.positionCaret(position);
-                });
-            }
-        });
-
-        phoneNum2.textProperty().addListener((obs, oldVal, newVal) -> {
-            int position = phoneNum2.getCaretPosition();
-            if (!newVal.matches("\\d*")) {
-                Platform.runLater(() -> {
-                    phoneNum2.setText(newVal.replaceAll("[^\\d]", ""));
-                    phoneNum2.positionCaret(position);
-                });
-            }
-            if (newVal.length() > 3) {
-                Platform.runLater(() -> {
-                    phoneNum2.setText(oldVal);
-                    phoneNum2.positionCaret(position);
-                });
-            }
-        });
-
-        phoneNum3.textProperty().addListener((obs, oldVal, newVal) -> {
-            int position = phoneNum3.getCaretPosition();
-            if (!newVal.matches("\\d*")) {
-                Platform.runLater(() -> {
-                    phoneNum3.setText(newVal.replaceAll("[^\\d]", ""));
-                    phoneNum3.positionCaret(position);
-                });
-            }
-            if (newVal.length() > 4) {
-                Platform.runLater(() -> {
-                    phoneNum3.setText(oldVal);
-                    phoneNum3.positionCaret(position);
-                });
             }
         });
 
