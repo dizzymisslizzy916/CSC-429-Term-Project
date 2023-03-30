@@ -37,11 +37,15 @@ public class TransactionChoiceView extends View
 
 	// GUI components
 
-	private Button depositButton;
-	private Button withdrawButton;
-	private Button transferButton;
-	private Button balanceInquiryButton;
-	private Button imposeServiceChargeButton;
+	private Button addScoutButton;
+	private Button addTreeButton;
+	private Button addTreeTypeButton;
+	private Button updateTreeTypeButton;
+	private Button searchScoutButton;
+	private Button sellTreeButton;
+	private Button removeTreeButton;
+	private Button startShiftButton;
+	private Button endShiftButton;
 
 	private Button cancelButton;
 
@@ -108,9 +112,9 @@ public class TransactionChoiceView extends View
 		// create the buttons, listen for events, add them to the container
 		HBox asCont = new HBox(10);
 		asCont.setAlignment(Pos.CENTER);
-		depositButton = new Button("AddScout");
-		depositButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		depositButton.setOnAction(new EventHandler<ActionEvent>() {
+		addScoutButton = new Button("AddScout");
+		addScoutButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		addScoutButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
@@ -123,9 +127,9 @@ public class TransactionChoiceView extends View
 
 		HBox atCont = new HBox(10);
 		atCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("AddTree");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		addTreeButton = new Button("AddTree");
+		addTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		addTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
@@ -138,9 +142,9 @@ public class TransactionChoiceView extends View
 
 		HBox attCont = new HBox(10);
 		attCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("AddTreeType");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		addTreeTypeButton = new Button("AddTreeType");
+		addTreeTypeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		addTreeTypeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -153,9 +157,9 @@ public class TransactionChoiceView extends View
 
 		HBox uttCont = new HBox(10);
 		uttCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("UpdateTreeType");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		updateTreetypeButton = new Button("UpdateTreeType");
+		updateTreetypeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		updateTreetypeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -168,13 +172,13 @@ public class TransactionChoiceView extends View
 
 		HBox usCont = new HBox(10);
 		usCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("UpdateScout");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		searchScoutButton = new Button("SearchScout");
+		searchScoutButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		searchScoutButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("UpdateScout", null);
+				myModel.stateChangeRequest("SearchScout", null);
 			}
 		});
 		usCont.getChildren().add(withdrawButton);
@@ -183,9 +187,9 @@ public class TransactionChoiceView extends View
 
 		HBox stCont = new HBox(10);
 		stCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("SellTree");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		sellTreeButton = new Button("SellTree");
+		sellTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		sellTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -198,9 +202,9 @@ public class TransactionChoiceView extends View
 
 		HBox rtCont = new HBox(10);
 		rtCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("RemoveTree");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
+		removeTreeButton = new Button("RemoveTree");
+		removeTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		removeTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -211,26 +215,13 @@ public class TransactionChoiceView extends View
 
 		container.getChildren().add(rtCont);
 
-		HBox rsCont = new HBox(10);
-		rsCont.setAlignment(Pos.CENTER);
-		withdrawButton = new Button("RemoveScout");
-		withdrawButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		withdrawButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("RemoveScout", null);
-			}
-		});
-		rsCont.getChildren().add(withdrawButton);
-
-		container.getChildren().add(rsCont);
+		
 
 		HBox ssCont = new HBox(10);
 		ssCont.setAlignment(Pos.CENTER);
-		transferButton = new Button("StartShift");
-		transferButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		transferButton.setOnAction(new EventHandler<ActionEvent>() {
+		startShiftButton = new Button("StartShift");
+		startShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		startShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
@@ -243,9 +234,9 @@ public class TransactionChoiceView extends View
 
 		HBox esCont = new HBox(10);
 		esCont.setAlignment(Pos.CENTER);
-		balanceInquiryButton = new Button("EndShift");
-		balanceInquiryButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		balanceInquiryButton.setOnAction(new EventHandler<ActionEvent>() {
+		endShiftButton = new Button("EndShift");
+		endShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		endShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
