@@ -63,7 +63,13 @@ public class Clerk implements IView, IModel{
         dependencies.setProperty("RegisterScout", "TransactionError");
         dependencies.setProperty("UpdateScout", "TransactionError");
         dependencies.setProperty("RemoveScout", "TransactionError");
-        //more dependencies for other use cases
+        dependencies.setProperty("AddTree", "TransactionError");
+        dependencies.setProperty("UpdateTree", "TransactionError");
+        dependencies.setProperty("RemoveTree", "TransactionError");
+        dependencies.setProperty("AddTreeType", "TransactionError");
+        dependencies.setProperty("UpdateTreeType", "TransactionError");
+        //remaining 3 use cases
+
 
         myRegistry.setDependencies(dependencies);
     }
@@ -91,7 +97,7 @@ public class Clerk implements IView, IModel{
             System.out.println(key);
             String transType = key;
 
-            createAndShowInsertScoutTransactionView();
+            createAndShowScoutInfoEntryView();
         }
         else if ((key.equals("UpdateScout") == true)|| (key.equals("RemoveScout")))
         {
@@ -141,16 +147,16 @@ public class Clerk implements IView, IModel{
 
    }
 
-    private void createAndShowInsertScoutTransactionView()
+    private void createAndShowScoutInfoEntryView()
     {
-        Scene currentScene = (Scene)myViews.get("InsertScoutTransactionView");
+        Scene currentScene = (Scene)myViews.get("ScoutInfoEntryView");
 
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("InsertScoutTransactionView", this); // USE VIEW FACTORY
+            View newView = ViewFactory.createView("ScoutInfoEntryView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
-            myViews.put("InsertScoutTransactionView", currentScene);
+            myViews.put("ScoutInfoEntryView", currentScene);
         }
 
         swapToView(currentScene);
@@ -204,3 +210,4 @@ public class Clerk implements IView, IModel{
     }
 
 }
+
