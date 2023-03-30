@@ -42,6 +42,8 @@ public class TransactionChoiceView extends View
 	private Button startShift;
 	private Button endShift;
 	private Button sellTree;
+	
+	private MessageView statusLog;
 
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
@@ -76,7 +78,7 @@ public class TransactionChoiceView extends View
 	private VBox createTitle()
 	{
 		VBox container = new VBox(10);
-		Text titleText = new Text("       Brockport Tree Lot         ");
+		Text titleText = new Text("     Boy Scout Troop 209 Tree Sales         ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);
@@ -122,10 +124,10 @@ public class TransactionChoiceView extends View
         	});
 		dCont.getChildren().add(registerScout);
 
-		container.getChildren().add(dCont);
+		// container.getChildren().add(dCont);
 
-		HBox wCont = new HBox(10);
-		wCont.setAlignment(Pos.CENTER);
+		// HBox wCont = new HBox(10);
+		// wCont.setAlignment(Pos.CENTER);
 		updateScout = new Button("Update A Scout");
 		updateScout.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		updateScout.setOnAction(new EventHandler<ActionEvent>() {
@@ -135,12 +137,12 @@ public class TransactionChoiceView extends View
        		     	myModel.stateChangeRequest("UpdateScout", null);
             	     }
         	});
-		wCont.getChildren().add(updateScout);
+		dCont.getChildren().add(updateScout);
 
-		container.getChildren().add(wCont);
+		//container.getChildren().add(wCont);
 
-		HBox tCont = new HBox(10);
-		tCont.setAlignment(Pos.CENTER);
+		//HBox tCont = new HBox(10);
+		//tCont.setAlignment(Pos.CENTER);
 		removeScout = new Button("Remove A Scout");
 		removeScout.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		removeScout.setOnAction(new EventHandler<ActionEvent>() {
@@ -150,9 +152,9 @@ public class TransactionChoiceView extends View
        		     	myModel.stateChangeRequest("RemoveScout", null);
             	     }
         	});
-		tCont.getChildren().add(removeScout);
+		dCont.getChildren().add(removeScout);
 
-		container.getChildren().add(tCont);
+		container.getChildren().add(dCont);
 
 		HBox biCont = new HBox(10);
 		biCont.setAlignment(Pos.CENTER);
@@ -166,10 +168,10 @@ public class TransactionChoiceView extends View
             	     }
         	});
 		biCont.getChildren().add(addTree);
-		container.getChildren().add(biCont);
+		//container.getChildren().add(biCont);
 
-		HBox iscCont = new HBox(10);
-		iscCont.setAlignment(Pos.CENTER);
+		//HBox iscCont = new HBox(10);
+		//iscCont.setAlignment(Pos.CENTER);
 		updateTree = new Button("Update A Tree");
 		updateTree.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		updateTree.setOnAction(new EventHandler<ActionEvent>() {
@@ -180,11 +182,11 @@ public class TransactionChoiceView extends View
             	     }
         	});
 
-		iscCont.getChildren().add(updateTree);
-		container.getChildren().add(iscCont);
+		biCont.getChildren().add(updateTree);
+		//container.getChildren().add(iscCont);
 
-		HBox rtCont = new HBox(10);
-		rtCont.setAlignment(Pos.CENTER);
+		//HBox rtCont = new HBox(10);
+		//rtCont.setAlignment(Pos.CENTER);
 		removeTree = new Button("Remove A Tree");
 		removeTree.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		removeTree.setOnAction(new EventHandler<ActionEvent>() {
@@ -195,8 +197,8 @@ public class TransactionChoiceView extends View
 			}
 		});
 
-		rtCont.getChildren().add(removeTree);
-		container.getChildren().add(rtCont);
+		biCont.getChildren().add(removeTree);
+		container.getChildren().add(biCont);
 
 		HBox attCont = new HBox(10);
 		attCont.setAlignment(Pos.CENTER);
@@ -211,10 +213,10 @@ public class TransactionChoiceView extends View
 		});
 
 		attCont.getChildren().add(addTreeType);
-		container.getChildren().add(attCont);
+		//container.getChildren().add(attCont);
 
-		HBox uttCont = new HBox(10);
-		uttCont.setAlignment(Pos.CENTER);
+		//HBox uttCont = new HBox(10);
+		//uttCont.setAlignment(Pos.CENTER);
 		updateTreeType = new Button("Update A Tree Type");
 		updateTreeType.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		updateTreeType.setOnAction(new EventHandler<ActionEvent>() {
@@ -225,8 +227,8 @@ public class TransactionChoiceView extends View
 			}
 		});
 
-		uttCont.getChildren().add(updateTreeType);
-		container.getChildren().add(uttCont);
+		attCont.getChildren().add(updateTreeType);
+		container.getChildren().add(attCont);
 
 		//Todo: add buttons startShift, endShift and sellTree
 
