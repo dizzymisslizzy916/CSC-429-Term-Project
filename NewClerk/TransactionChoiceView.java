@@ -26,36 +26,31 @@ import javafx.stage.Stage;
 // project imports
 import impresario.IModel;
 
-/** The class containing the Transaction Choice View  for the ATM application */
+/** The class containing the Transaction Choice View  for the Tree Lot Application */
 //==============================================================
 public class TransactionChoiceView extends View
 {
-
-	// other private data
-	private final int labelWidth = 120;
-	private final int labelHeight = 25;
-
-	// GUI components
-
-	private Button addScoutButton;
+	//GUI components
+	private Button registerScoutButton;
+	private Button updateOrRemoveScoutButton;
 	private Button addTreeButton;
+	private Button updateTreeButton;
+	private Button removeTreeButton;
 	private Button addTreeTypeButton;
 	private Button updateTreeTypeButton;
-	private Button searchScoutButton;
-	private Button sellTreeButton;
-	private Button removeTreeButton;
 	private Button startShiftButton;
 	private Button endShiftButton;
+	private Button sellTreeButton;
 
 	private Button cancelButton;
-
+	
 	private MessageView statusLog;
 
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
-	public TransactionChoiceView(IModel teller)
+	public TransactionChoiceView(IModel clerk)
 	{
-		super(teller, "TransactionChoiceView");
+		super(clerk, "TransactionChoiceView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -84,12 +79,19 @@ public class TransactionChoiceView extends View
 	private VBox createTitle()
 	{
 		VBox container = new VBox(10);
-		Text titleText = new Text("       Brockport Tree Lot         ");
+		Text titleText = new Text("     Boy Scout Troop 209 Tree Sales         ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);
-		titleText.setFill(Color.DARKGREEN);
+		titleText.setFill(Color.BLACK);
 		container.getChildren().add(titleText);
+
+		Text welcomeText = new Text("Welcome!");
+		welcomeText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+		welcomeText.setWrappingWidth(300);
+		welcomeText.setTextAlignment(TextAlignment.CENTER);
+		welcomeText.setFill(Color.BLACK);
+		container.getChildren().add(welcomeText);
 
 		Text inquiryText = new Text("What do you wish to do today?");
 		inquiryText.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -112,15 +114,15 @@ public class TransactionChoiceView extends View
 		// create the buttons, listen for events, add them to the container
 		HBox asCont = new HBox(10);
 		asCont.setAlignment(Pos.CENTER);
-		addScoutButton = new Button("AddScout");
-		addScoutButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		addScoutButton.setOnAction(new EventHandler<ActionEvent>() {
+		registerScout = new Button("AddScout");
+		registerScout.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		registerScout.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("AddScout", null);
-            	     }
-        	});
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("AddScout", null);
+			}
+		});
 		asCont.getChildren().add(depositButton);
 
 		container.getChildren().add(asCont);
@@ -131,11 +133,11 @@ public class TransactionChoiceView extends View
 		addTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		addTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("AddTree", null);
-            	     }
-        	});
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("AddTree", null);
+			}
+		});
 		atCont.getChildren().add(withdrawButton);
 
 		container.getChildren().add(atCont);
@@ -172,9 +174,9 @@ public class TransactionChoiceView extends View
 
 		HBox usCont = new HBox(10);
 		usCont.setAlignment(Pos.CENTER);
-		searchScoutButton = new Button("SearchScout");
-		searchScoutButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		searchScoutButton.setOnAction(new EventHandler<ActionEvent>() {
+		updateOrRemoveButton = new Button("SearchScout");
+		updateOrRemoveButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		updateOrRemoveButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -215,7 +217,7 @@ public class TransactionChoiceView extends View
 
 		container.getChildren().add(rtCont);
 
-		
+
 
 		HBox ssCont = new HBox(10);
 		ssCont.setAlignment(Pos.CENTER);
@@ -223,11 +225,11 @@ public class TransactionChoiceView extends View
 		startShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		startShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("StartShift", null);
-            	     }
-        	});
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("StartShift", null);
+			}
+		});
 		ssCont.getChildren().add(transferButton);
 
 		container.getChildren().add(ssCont);
@@ -238,26 +240,26 @@ public class TransactionChoiceView extends View
 		endShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		endShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("EndShift", null);
-            	     }
-        	});
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("EndShift", null);
+			}
+		});
 		esCont.getChildren().add(balanceInquiryButton);
 
 		container.getChildren().add(esCont);
 
 		HBox doneCont = new HBox(10);
 		doneCont.setAlignment(Pos.CENTER);
-		cancelButton = new Button("Logout");
+		cancelButton = new Button("Exit");
 		cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
-       		     @Override
-       		     public void handle(ActionEvent e) {
-       		     	myModel.stateChangeRequest("Logout", null);    
-            	     }
-        	});
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("Exit", null);
+			}
+		});
 		doneCont.getChildren().add(cancelButton);
 
 		container.getChildren().add(doneCont);
