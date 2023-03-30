@@ -21,7 +21,7 @@ public class TransactionFactory
 	{
 		Transaction retValue = null;
 
-		if (transType.equals("RegisterScout") == true)
+		if (transType.equals("AddScout") == true)
 		{
 			retValue = new InsertScoutTransaction();
 		}

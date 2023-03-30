@@ -63,7 +63,13 @@ public class Clerk implements IView, IModel{
         dependencies.setProperty("RegisterScout", "TransactionError");
         dependencies.setProperty("UpdateScout", "TransactionError");
         dependencies.setProperty("RemoveScout", "TransactionError");
-        //more dependencies for other use cases
+        dependencies.setProperty("AddTree", "TransactionError");
+        dependencies.setProperty("UpdateTree", "TransactionError");
+        dependencies.setProperty("RemoveTree", "TransactionError");
+        dependencies.setProperty("AddTreeType", "TransactionError");
+        dependencies.setProperty("UpdateTreeType", "TransactionError");
+        //remaining 3 use cases
+
 
         myRegistry.setDependencies(dependencies);
     }
