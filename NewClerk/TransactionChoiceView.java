@@ -120,7 +120,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Add Scout", null);
+				myModel.stateChangeRequest("RegisterScout", null);
 			}
 		});
 		asCont.getChildren().add(depositButton);
@@ -135,7 +135,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Add Tree", null);
+				myModel.stateChangeRequest("AddTree", null);
 			}
 		});
 		atCont.getChildren().add(withdrawButton);
@@ -150,7 +150,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Add TreeType", null);
+				myModel.stateChangeRequest("AddTreeType", null);
 			}
 		});
 		attCont.getChildren().add(withdrawButton);
@@ -165,7 +165,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Update TreeType", null);
+				myModel.stateChangeRequest("UpdateTreeType", null);
 			}
 		});
 		uttCont.getChildren().add(withdrawButton);
@@ -180,7 +180,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Update/Remove Scout", null);
+				myModel.stateChangeRequest("UpdateRemoveScout", null);
 			}
 		});
 		usCont.getChildren().add(withdrawButton);
@@ -195,7 +195,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Sell Tree", null);
+				myModel.stateChangeRequest("SellTree", null);
 			}
 		});
 		stCont.getChildren().add(withdrawButton);
@@ -210,7 +210,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Remove Tree", null);
+				myModel.stateChangeRequest("RemoveTree", null);
 			}
 		});
 		rtCont.getChildren().add(withdrawButton);
@@ -227,7 +227,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("Start Shift", null);
+				myModel.stateChangeRequest("StartShift", null);
 			}
 		});
 		ssCont.getChildren().add(transferButton);
@@ -242,7 +242,7 @@ public class TransactionChoiceView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("End Shift", null);
+				myModel.stateChangeRequest("EndShift", null);
 			}
 		});
 		esCont.getChildren().add(balanceInquiryButton);
