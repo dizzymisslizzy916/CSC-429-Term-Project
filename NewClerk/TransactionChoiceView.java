@@ -114,13 +114,13 @@ public class TransactionChoiceView extends View
 		// create the buttons, listen for events, add them to the container
 		HBox asCont = new HBox(10);
 		asCont.setAlignment(Pos.CENTER);
-		registerScout = new Button("AddScout");
+		registerScout = new Button("Add Scout");
 		registerScout.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		registerScout.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("AddScout", null);
+				myModel.stateChangeRequest("Add Scout", null);
 			}
 		});
 		asCont.getChildren().add(depositButton);
@@ -129,13 +129,13 @@ public class TransactionChoiceView extends View
 
 		HBox atCont = new HBox(10);
 		atCont.setAlignment(Pos.CENTER);
-		addTreeButton = new Button("AddTree");
+		addTreeButton = new Button("Add Tree");
 		addTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		addTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("AddTree", null);
+				myModel.stateChangeRequest("Add Tree", null);
 			}
 		});
 		atCont.getChildren().add(withdrawButton);
@@ -144,13 +144,13 @@ public class TransactionChoiceView extends View
 
 		HBox attCont = new HBox(10);
 		attCont.setAlignment(Pos.CENTER);
-		addTreeTypeButton = new Button("AddTreeType");
+		addTreeTypeButton = new Button("Add TreeType");
 		addTreeTypeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		addTreeTypeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("AddTreeType", null);
+				myModel.stateChangeRequest("Add TreeType", null);
 			}
 		});
 		attCont.getChildren().add(withdrawButton);
@@ -159,13 +159,13 @@ public class TransactionChoiceView extends View
 
 		HBox uttCont = new HBox(10);
 		uttCont.setAlignment(Pos.CENTER);
-		updateTreetypeButton = new Button("UpdateTreeType");
+		updateTreetypeButton = new Button("Update TreeType");
 		updateTreetypeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		updateTreetypeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("UpdateTreeType", null);
+				myModel.stateChangeRequest("Update TreeType", null);
 			}
 		});
 		uttCont.getChildren().add(withdrawButton);
@@ -174,13 +174,13 @@ public class TransactionChoiceView extends View
 
 		HBox usCont = new HBox(10);
 		usCont.setAlignment(Pos.CENTER);
-		updateOrRemoveButton = new Button("SearchScout");
+		updateOrRemoveButton = new Button("Update/Remove Scout");
 		updateOrRemoveButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		updateOrRemoveButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("SearchScout", null);
+				myModel.stateChangeRequest("Update/Remove Scout", null);
 			}
 		});
 		usCont.getChildren().add(withdrawButton);
@@ -189,13 +189,13 @@ public class TransactionChoiceView extends View
 
 		HBox stCont = new HBox(10);
 		stCont.setAlignment(Pos.CENTER);
-		sellTreeButton = new Button("SellTree");
+		sellTreeButton = new Button("Sell Tree");
 		sellTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		sellTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("SellTree", null);
+				myModel.stateChangeRequest("Sell Tree", null);
 			}
 		});
 		stCont.getChildren().add(withdrawButton);
@@ -204,13 +204,13 @@ public class TransactionChoiceView extends View
 
 		HBox rtCont = new HBox(10);
 		rtCont.setAlignment(Pos.CENTER);
-		removeTreeButton = new Button("RemoveTree");
+		removeTreeButton = new Button("Remove Tree");
 		removeTreeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		removeTreeButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("RemoveTree", null);
+				myModel.stateChangeRequest("Remove Tree", null);
 			}
 		});
 		rtCont.getChildren().add(withdrawButton);
@@ -221,13 +221,13 @@ public class TransactionChoiceView extends View
 
 		HBox ssCont = new HBox(10);
 		ssCont.setAlignment(Pos.CENTER);
-		startShiftButton = new Button("StartShift");
+		startShiftButton = new Button("Start Shift");
 		startShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		startShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("StartShift", null);
+				myModel.stateChangeRequest("Start Shift", null);
 			}
 		});
 		ssCont.getChildren().add(transferButton);
@@ -236,13 +236,13 @@ public class TransactionChoiceView extends View
 
 		HBox esCont = new HBox(10);
 		esCont.setAlignment(Pos.CENTER);
-		endShiftButton = new Button("EndShift");
+		endShiftButton = new Button("End Shift");
 		endShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		endShiftButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("EndShift", null);
+				myModel.stateChangeRequest("End Shift", null);
 			}
 		});
 		esCont.getChildren().add(balanceInquiryButton);
