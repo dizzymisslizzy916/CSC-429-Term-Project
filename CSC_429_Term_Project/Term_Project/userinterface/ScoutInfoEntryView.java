@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ScoutInfoEntryView extends View{
 
@@ -36,6 +36,8 @@ public class ScoutInfoEntryView extends View{
         handleForm(root);
 
         getChildren().add(container);
+		
+		myModel.subscribe("ScoutUpdateStatusMessage", this); //must match data member of InsertScoutTransaction
     }
 
     private void handleForm(Parent root) {
@@ -133,36 +135,59 @@ public class ScoutInfoEntryView extends View{
                     troopID.getText().isEmpty() ||
                     phoneNumber.length() < 10 ||
                     dateOfBirth.getEditor().getText().isEmpty()) {
-                displayMessage("Please enter proper values for all given fields", true);
+                displayMessage("Please enter proper values for all given fields");
             } else {
-                ArrayList<String> scoutInfo = new ArrayList<>();
-                scoutInfo.add(firstName.getText());
-                scoutInfo.add(middleName.getText());
-                scoutInfo.add(lastName.getText());
-                scoutInfo.add(email.getText());
-                scoutInfo.add(troopID.getText());
-                scoutInfo.add(phoneNumber);
-                scoutInfo.add(dateOfBirth.getEditor().getText());
+                Properties scoutInfo = new Properties(); //must be Property objects
+                scoutInfo.setProperty("firstName", firstName.getText());
+                scoutInfo.setProperty("middleName", middleName.getText());
+                scoutInfo.setProperty("lastName", lastName.getText());
+                scoutInfo.setProperty("email", email.getText());
+                scoutInfo.setProperty("troopId", troopID.getText());
+                scoutInfo.setProperty("phoneNumber", phoneNumber);
+                scoutInfo.setProperty("dateOfBirth", dateOfBirth.getEditor().getText());
                 //make a case under Scout.statechangerequest for "Enter Scout" which handles passing the scout info
                 //to the model but doesn't change views
-                myModel.stateChangeRequest("Enter Scout", scoutInfo);
-                displayMessage("Scout added successfully", false);
+                myModel.stateChangeRequest("ScoutData", scoutInfo);
+               /* displayMessage("Scout added successfully", false); confirmation should come from model*/
             }
         });
     }
 
     @Override
     public void updateState(String key, Object value) {
+		
+		if (key.equals("ScoutUpdateStatusMessage") == true) //must match data member of InsertScoutTransaction
+		{
+			String msg = (String)value;
+			if (msg.startsWith("ERR") == true)
+			{
+				displayErrorMessage(msg);
+			}
+			else
+			{
+				displayMessage(msg);
+			}
+		}
 
     }
+	
+	public void displayErrorMessage(String message)
+	{
+		statusLog.displayErrorMessage(message);
+	}
 
-    public void displayMessage(String message, boolean error) {
+   /* public void displayMessage(String message, boolean error) {
         if(error) {
             statusLog.displayErrorMessage(message);
         } else {
             statusLog.displayMessage(message);
         }
-    }
+    }*/
+	
+	public void displayMessage(String message)
+	{
+		statusLog.displayMessage(message);
+	}
 
     private MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
