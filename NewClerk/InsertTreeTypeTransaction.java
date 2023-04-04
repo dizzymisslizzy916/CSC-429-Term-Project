@@ -25,11 +25,7 @@ public class InsertTreeTypeTransaction extends Transaction {
         myRegistry.setDependencies(dependencies);
     }
 
-    @Override
-    protected void getMessagesBundle()
-    {
-        myMessages = ResourceBundle.getBundle("model.i18n.TreeType", myLocale);
-    }
+
 
     @Override
     protected Scene createView() {
