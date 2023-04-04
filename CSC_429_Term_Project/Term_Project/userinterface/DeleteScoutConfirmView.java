@@ -1,10 +1,12 @@
 package userinterface;
 
 import impresario.IModel;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.Scout;
 
@@ -29,6 +31,7 @@ public class DeleteScoutConfirmView extends View{
     }
 
     private void handleForm(Parent root) {
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchorPane");
         Text name = (Text) root.lookup("#name");
         Text email = (Text) root.lookup("#email");
         Text troopID = (Text) root.lookup("#troopID");
@@ -37,7 +40,7 @@ public class DeleteScoutConfirmView extends View{
         Button cancel = (Button) root.lookup("#cancel");
         Button confirm = (Button) root.lookup("#confirm");
 
-        //TODO - not actually sure what column names are in database
+        //TODO - model implementation
         Scout scout = (Scout) myModel.getState("ScoutDelete");
         String firstName = (String) scout.getState("firstName");
         String middleName = (String) scout.getState("middleName");
@@ -48,8 +51,10 @@ public class DeleteScoutConfirmView extends View{
         phoneNumber.setText((String) scout.getState("phoneNumber"));
         dateOfBirth.setText(((String) scout.getState("dateOfBirth")));
 
+        Platform.runLater(anchorPane::requestFocus);
+
         cancel.setOnAction(e -> {
-            myModel.stateChangeRequest("ScoutSearchScreen", null);
+            myModel.stateChangeRequest("TransactionChoiceView", null);
         });
 
         confirm.setOnAction(e -> {

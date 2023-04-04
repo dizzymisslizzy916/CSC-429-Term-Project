@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class SearchScoutView extends View {
 
@@ -31,7 +32,7 @@ public class SearchScoutView extends View {
         try {
             root = FXMLLoader.load(fxmlFile.toURI().toURL());
         } catch(IOException e) {
-            System.err.println("searchscoutview.fxml not found");
+            System.err.println("enterscoutinfo.fxml not found");
             e.printStackTrace();
         }
         container.getChildren().add(root);
@@ -84,33 +85,33 @@ public class SearchScoutView extends View {
         Platform.runLater(anchorPane::requestFocus);
 
         submit.setOnAction(e -> {
-            ArrayList<String> searchData = new ArrayList<>();
+            Properties searchData = new Properties();
             if(!firstName.getText().isEmpty()) {
-                searchData.add(firstName.getText());
+                searchData.setProperty("firstName", firstName.getText());
             }
             if(!lastName.getText().isEmpty()) {
-                searchData.add(lastName.getText());
+                searchData.setProperty("lastName", lastName.getText());
             }
             if(!middleName.getText().isEmpty()) {
-                searchData.add(middleName.getText());
+                searchData.setProperty("middleName", middleName.getText());
             }
             if(!email.getText().isEmpty()) {
-                searchData.add(email.getText());
+                searchData.setProperty("email", email.getText());
             }
             if(!troopID.getText().isEmpty()) {
-                searchData.add(troopID.getText());
+                searchData.setProperty("troopId", troopID.getText());
             }
             String phoneNum = phoneNum1.getText() + phoneNum2.getText() + phoneNum3.getText();
             if(!phoneNum.isEmpty()) {
                 if(phoneNum.length() == 10) {
-                    searchData.add(phoneNum);
+                    searchData.setProperty("phoneNumber", phoneNum);
                 } else {
                     displayMessage("Please enter a full phone number or none at all", true);
                     return;
                 }
             }
             if(!dateOfBirth.getEditor().getText().isEmpty()) {
-                searchData.add(dateOfBirth.getEditor().getText());
+                searchData.setProperty("dateOfBirth", dateOfBirth.getEditor().getText());
             }
             if(!searchData.isEmpty()) {
                 myModel.stateChangeRequest("SelectScoutScreen", searchData);

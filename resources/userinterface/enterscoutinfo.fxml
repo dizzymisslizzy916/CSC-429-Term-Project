@@ -49,7 +49,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <DatePicker fx:id="dateOfBirth" editable="false" layoutX="160.0" layoutY="260.0" />
+      <DatePicker fx:id="dateOfBirth" editable="false" layoutX="163.0" layoutY="260.0" />
       <Text layoutX="18.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number">
          <font>
             <Font size="20.0" />
@@ -68,7 +68,7 @@
       </Text>
       <TextField fx:id="phoneNum3" layoutX="251.0" layoutY="231.0" prefHeight="26.0" prefWidth="47.0" promptText="5555" />
       <Button id="submitButton" fx:id="submitButton" layoutX="287.0" layoutY="326.0" mnemonicParsing="false" text="Submit" />
-      <Button fx:id="doneButton" layoutX="220.0" layoutY="326.0" mnemonicParsing="false" text="Done" />
+      <Button fx:id="doneButton" layoutX="163.0" layoutY="326.0" mnemonicParsing="false" text="Done" />
       <TextField fx:id="phoneNum1" layoutX="163.0" layoutY="231.0" prefHeight="26.0" prefWidth="36.0" promptText="555" />
    </children>
 </AnchorPane>

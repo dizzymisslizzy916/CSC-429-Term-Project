@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class ScoutInfoEntryView extends View{
 
@@ -29,7 +30,7 @@ public class ScoutInfoEntryView extends View{
         try {
             root = FXMLLoader.load(fxmlFile.toURI().toURL());
         } catch(IOException e) {
-            System.err.println("searchscoutview.fxml not found");
+            System.err.println("enterscoutinfo.fxml not found");
             e.printStackTrace();
         }
         container.getChildren().add(root);
@@ -54,7 +55,8 @@ public class ScoutInfoEntryView extends View{
         Button done = (Button) root.lookup("#doneButton");
 
         //setting up proper restrictions for text fields
-        UIUtils.limitLength(troopID, 10);
+        UIUtils.limitToDigits(troopID);
+        UIUtils.limitLength(troopID, 5);
 
         UIUtils.limitToDigits(phoneNum1);
         UIUtils.limitLength(phoneNum1, 3);
@@ -90,19 +92,28 @@ public class ScoutInfoEntryView extends View{
                     phoneNumber.length() < 10 ||
                     dateOfBirth.getEditor().getText().isEmpty()) {
                 displayMessage("Please enter proper values for all given fields", true);
+            } else if(!email.getText().contains("@")) {
+                displayMessage("Email field must contain an '@' symbol", true);
             } else {
-                ArrayList<String> scoutInfo = new ArrayList<>();
-                scoutInfo.add(firstName.getText());
-                scoutInfo.add(middleName.getText());
-                scoutInfo.add(lastName.getText());
-                scoutInfo.add(email.getText());
-                scoutInfo.add(troopID.getText());
-                scoutInfo.add(phoneNumber);
-                scoutInfo.add(dateOfBirth.getEditor().getText());
-                //make a case under Scout.statechangerequest for "Enter Scout" which handles passing the scout info
-                //to the model but doesn't change views
-                myModel.stateChangeRequest("Enter Scout", scoutInfo);
-                displayMessage("Scout added successfully", false);
+                //TODO - model implementation
+                myModel.stateChangeRequest("Validate TroopID", troopID.getText());
+                //mymodel.getState("Is TroopId Valid") should return a boolean which represents if the id passed
+                //in the previous stateChangeRequest already exists in the database
+                boolean valid = (boolean) myModel.getState("Is TroopId Valid");
+                if(valid) {
+                    Properties scoutInfo = new Properties();
+                    scoutInfo.setProperty("firstName", firstName.getText());
+                    scoutInfo.setProperty("middleName", middleName.getText());
+                    scoutInfo.setProperty("lastName", lastName.getText());
+                    scoutInfo.setProperty("email", email.getText());
+                    scoutInfo.setProperty("troopId", troopID.getText());
+                    scoutInfo.setProperty("phoneNumber", phoneNumber);
+                    scoutInfo.setProperty("dateOfBirth", dateOfBirth.getEditor().getText());
+
+                    //TODO - model implementation
+                    myModel.stateChangeRequest("Enter Scout", scoutInfo);
+                    displayMessage("Scout added successfully", false);
+                }
             }
         });
     }

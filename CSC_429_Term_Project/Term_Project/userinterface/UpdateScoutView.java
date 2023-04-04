@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class UpdateScoutView extends View{
     private MessageView statusLog;
@@ -27,7 +28,7 @@ public class UpdateScoutView extends View{
         try {
             root = FXMLLoader.load(fxmlFile.toURI().toURL());
         } catch(IOException e) {
-            System.err.println("searchscoutview.fxml not found");
+            System.err.println("enterscoutinfo.fxml not found");
             e.printStackTrace();
         }
         container.getChildren().add(root);
@@ -78,33 +79,33 @@ public class UpdateScoutView extends View{
         Platform.runLater(anchorPane::requestFocus);
 
         submit.setOnAction(e -> {
-            ArrayList<String> updateData = new ArrayList<>();
+            Properties updateData = new Properties();
             if(!firstName.getText().isEmpty()) {
-                updateData.add(firstName.getText());
+                updateData.setProperty("firstName", firstName.getText());
             }
             if(!lastName.getText().isEmpty()) {
-                updateData.add(lastName.getText());
+                updateData.setProperty("lastName", lastName.getText());
             }
             if(!middleName.getText().isEmpty()) {
-                updateData.add(middleName.getText());
+                updateData.setProperty("middleName", middleName.getText());
             }
             if(!email.getText().isEmpty()) {
-                updateData.add(email.getText());
+                updateData.setProperty("email", email.getText());
             }
             if(!troopID.getText().isEmpty()) {
-                updateData.add(troopID.getText());
+                updateData.setProperty("troopId", troopID.getText());
             }
             String phoneNum = phoneNum1.getText() + phoneNum2.getText() + phoneNum3.getText();
             if(!phoneNum.isEmpty()) {
                 if(phoneNum.length() == 10) {
-                    updateData.add(phoneNum);
+                    updateData.setProperty("phoneNumber", phoneNum);
                 } else {
                     displayMessage("Please enter a full phone number or none at all", true);
                     return;
                 }
             }
             if(!dateOfBirth.getEditor().getText().isEmpty()) {
-                updateData.add(dateOfBirth.getEditor().getText());
+                updateData.setProperty("dateOfBirth", dateOfBirth.getEditor().getText());
             }
             if(!updateData.isEmpty()) {
                 myModel.stateChangeRequest("Update Scout", updateData);
