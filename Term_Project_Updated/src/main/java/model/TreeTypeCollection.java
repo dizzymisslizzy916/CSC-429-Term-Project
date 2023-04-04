@@ -15,74 +15,73 @@ import impresario.IView;
 
 
 
-/** The class containing the ScoutCollection */
+/** The class containing the TreeTypeCollection */
 //==============================================================
-public class ScoutCollection  extends EntityBase implements IView
+public class TreeTypeCollection  extends EntityBase implements IView
 {
-    private static final String myTableName = "Scout";
-    private Vector<Scout> scoutList;
+    private static final String myTableName = "TreeType";
+    private Vector<TreeType> treeTypeList;
     // GUI Components
 
     // constructor for this class
     //----------------------------------------------------------
-    public ScoutCollection() {
+    public TreeTypeCollection() {
         super(myTableName);
 
-        scoutList = new Vector<>();
+        treeTypeList = new Vector<>();
     }
     //----------------------------------------------------------------------------------
     public void helper(String query)throws Exception{
         Vector allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null) {
-            scoutList = new Vector <Scout>();
+            treeTypeList = new Vector <TreeType>();
 
             for (int cnt = 0; cnt < allDataRetrieved.size(); cnt++) //for all items in vector
             {
-                Properties nextScoutData = (Properties)allDataRetrieved.elementAt(cnt); //get next scout
+                Properties nextTreeTypeData = (Properties)allDataRetrieved.elementAt(cnt); //get next tree type
 
-                Scout scout = new Scout(nextScoutData);
+                TreeType treeType = new TreeType(nextTreeTypeData);
 
-                if (scout != null)
+                if (treeType != null)
                 {
-                    addScout(scout); //add scout to collection
+                    addTreeType(treeType); //add treetype to collection
                 }
             }
 
         } else {
-            throw new Exception("No Scout found");
+            throw new Exception("No Tree Type found");
         }
     }
     //----------------------------------------------------------------------------------
     //methods for pulling SQL result if needed
 
     //----------------------------------------------------------------------------------
-    public void findScoutsWithNameLike(String fName) throws Exception {
-        String query = "SELECT * FROM " + myTableName + " WHERE (firstName LIKE '%" + fName + "%')";
+    public void findTreeTypeWithBarcodePrefixLike(String barCode) throws Exception {
+        String query = "SELECT * FROM " + myTableName + " WHERE (barcodePrefix LIKE '%" + barCode + "%')";
         helper(query);
     }
-    public void addScout(Scout b)
+    public void addTreeType(TreeType b)
     {
-        //scout.add(b);
         int index = findIndexToAdd(b);
-        scoutList.insertElementAt(b,index); // To build up a collection sorted on some key
+        treeTypeList.insertElementAt(b,index); // To build up a collection sorted on some key
     }
 
     //----------------------------------------------------------------------------------
-    public int findIndexToAdd(Scout b)
+    public int findIndexToAdd(TreeType b)
     {
         //users.add(u);
         int low=0;
-        int high = scoutList.size()-1;
+        int high = treeTypeList.size()-1;
         int middle;
 
         while (low <=high)
         {
             middle = (low+high)/2;
 
-            Scout midSession = scoutList.elementAt(middle);
+            TreeType midSession = treeTypeList.elementAt(middle);
 
-            int result = Scout.compare(b,midSession);
+            int result = TreeType.compare(b,midSession);
 
             if (result ==0)
             {
@@ -109,10 +108,10 @@ public class ScoutCollection  extends EntityBase implements IView
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("Scouts"))
-            return scoutList;
+        if (key.equals("TreeType"))
+            return treeTypeList;
         else
-        if (key.equals("ScoutList")) //is this correct?
+        if (key.equals("TreeTypeList"))
             return this;
         return null;
     }
@@ -125,16 +124,16 @@ public class ScoutCollection  extends EntityBase implements IView
     }
 
     //----------------------------------------------------------
-    public Scout retrieve(String scoutId) //input scot ID
+    public TreeType retrieve(String Id) //input scot ID
     {
-        Scout retValue = null;
-        for (int cnt = 0; cnt < scoutList.size(); cnt++) //for all scouts in the collection
+        TreeType retValue = null;
+        for (int cnt = 0; cnt < treeTypeList.size(); cnt++) //for all tree type in the collection
         {
-            Scout nextScout = scoutList.elementAt(cnt); //retrieve next Scout object
-            String nextScoutId = (String)nextScout.getState("scoutId"); //retrieve its scout ID
-            if (scoutId.equals(scoutId) == true) //if input scout ID matches retrieved scout ID
+            TreeType nextTreeType = treeTypeList.elementAt(cnt); //retrieve next tree type object
+            String nextTreeTypeId = (String)nextTreeType.getState("Id"); //retrieve its scout ID
+            if (Id.equals(Id) == true) //if input tree type ID matches retrieved ID
             {
-                retValue = nextScout; //return that scout
+                retValue = nextTreeType; //return that scout
                 return retValue; // we should say 'break;' here
             }
         }
@@ -153,11 +152,11 @@ public class ScoutCollection  extends EntityBase implements IView
     public void display(){
 
         String retVal = "";
-        if (scoutList != null)
+        if (treeTypeList != null)
         {
-            for (int cnt = 0; cnt < scoutList.size(); cnt++)
+            for (int cnt = 0; cnt < treeTypeList.size(); cnt++)
             {
-                Scout b = scoutList.get(cnt);
+                TreeType b = treeTypeList.get(cnt);
                 System.out.println(b.toString());
             }
         }

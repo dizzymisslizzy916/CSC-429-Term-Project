@@ -15,74 +15,70 @@ import impresario.IView;
 
 
 
-/** The class containing the ScoutCollection */
+/** The class containing the TreeCollection */
 //==============================================================
-public class ScoutCollection  extends EntityBase implements IView
+public class TreeCollection  extends EntityBase implements IView
 {
-    private static final String myTableName = "Scout";
-    private Vector<Scout> scoutList;
+    private static final String myTableName = "Tree";
+    private Vector<Tree> treeList;
     // GUI Components
 
     // constructor for this class
     //----------------------------------------------------------
-    public ScoutCollection() {
+    public TreeCollection() {
         super(myTableName);
 
-        scoutList = new Vector<>();
+        treeList = new Vector<>();
     }
     //----------------------------------------------------------------------------------
     public void helper(String query)throws Exception{
         Vector allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null) {
-            scoutList = new Vector <Scout>();
+            treeList = new Vector <Tree>();
 
             for (int cnt = 0; cnt < allDataRetrieved.size(); cnt++) //for all items in vector
             {
-                Properties nextScoutData = (Properties)allDataRetrieved.elementAt(cnt); //get next scout
+                Properties nextTreeData = (Properties)allDataRetrieved.elementAt(cnt); //get next tree
 
-                Scout scout = new Scout(nextScoutData);
+                Tree tree = new Tree(nextTreeData);
 
-                if (scout != null)
+                if (tree != null)
                 {
-                    addScout(scout); //add scout to collection
+                    addTree(tree); //add tree to collection
                 }
             }
 
         } else {
-            throw new Exception("No Scout found");
+            throw new Exception("No Tree found");
         }
     }
     //----------------------------------------------------------------------------------
-    //methods for pulling SQL result if needed
+
 
     //----------------------------------------------------------------------------------
-    public void findScoutsWithNameLike(String fName) throws Exception {
-        String query = "SELECT * FROM " + myTableName + " WHERE (firstName LIKE '%" + fName + "%')";
-        helper(query);
-    }
-    public void addScout(Scout b)
+    public void addTree(Tree b)
     {
-        //scout.add(b);
+        //trees.add(b);
         int index = findIndexToAdd(b);
-        scoutList.insertElementAt(b,index); // To build up a collection sorted on some key
+        treeList.insertElementAt(b,index); // To build up a collection sorted on some key
     }
 
     //----------------------------------------------------------------------------------
-    public int findIndexToAdd(Scout b)
+    public int findIndexToAdd(Tree b)
     {
         //users.add(u);
         int low=0;
-        int high = scoutList.size()-1;
+        int high = treeList.size()-1;
         int middle;
 
         while (low <=high)
         {
             middle = (low+high)/2;
 
-            Scout midSession = scoutList.elementAt(middle);
+            Tree midSession = treeList.elementAt(middle);
 
-            int result = Scout.compare(b,midSession);
+            int result = Tree.compare(b,midSession);
 
             if (result ==0)
             {
@@ -109,10 +105,10 @@ public class ScoutCollection  extends EntityBase implements IView
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("Scouts"))
-            return scoutList;
+        if (key.equals("Trees"))
+            return treeList;
         else
-        if (key.equals("ScoutList")) //is this correct?
+        if (key.equals("TreeList")) //is this correct?
             return this;
         return null;
     }
@@ -125,16 +121,16 @@ public class ScoutCollection  extends EntityBase implements IView
     }
 
     //----------------------------------------------------------
-    public Scout retrieve(String scoutId) //input scot ID
+    public Tree retrieve(String barCode) //input tree barcode
     {
-        Scout retValue = null;
-        for (int cnt = 0; cnt < scoutList.size(); cnt++) //for all scouts in the collection
+        Tree retValue = null;
+        for (int cnt = 0; cnt < treeList.size(); cnt++) //for all trees in the collection
         {
-            Scout nextScout = scoutList.elementAt(cnt); //retrieve next Scout object
-            String nextScoutId = (String)nextScout.getState("scoutId"); //retrieve its scout ID
-            if (scoutId.equals(scoutId) == true) //if input scout ID matches retrieved scout ID
+            Tree nextTree = treeList.elementAt(cnt); //retrieve next Tree object
+            String nextTreeCode = (String)nextTree.getState("barCode"); //retrieve its tree ID
+            if (barCode.equals(barCode) == true) //if input tree ID matches retrieved tree ID
             {
-                retValue = nextScout; //return that scout
+                retValue = nextTree; //return that tree
                 return retValue; // we should say 'break;' here
             }
         }
@@ -153,11 +149,11 @@ public class ScoutCollection  extends EntityBase implements IView
     public void display(){
 
         String retVal = "";
-        if (scoutList != null)
+        if (treeList != null)
         {
-            for (int cnt = 0; cnt < scoutList.size(); cnt++)
+            for (int cnt = 0; cnt < treeList.size(); cnt++)
             {
-                Scout b = scoutList.get(cnt);
+                Tree b = treeList.get(cnt);
                 System.out.println(b.toString());
             }
         }
