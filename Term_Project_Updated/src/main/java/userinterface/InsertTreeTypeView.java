@@ -175,7 +175,7 @@ public class InsertTreeTypeView extends View
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("TreeTypeCancelled", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
         doneCont.getChildren().add(doneButton);

@@ -31,7 +31,7 @@ public class InsertTreeView extends View
 {
 
     // GUI components
-    protected TextField treeType;
+    protected TextField barcodeVal;
     protected TextField Notes;
     protected ComboBox status;
 
@@ -63,7 +63,7 @@ public class InsertTreeView extends View
 
         populateFields();
 
-        myModel.subscribe("UpdateStatusMessage", this);
+        myModel.subscribe("TransactionError", this);
     }
 
 
@@ -74,7 +74,7 @@ public class InsertTreeView extends View
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Register A Tree ");
+        Text titleText = new Text(" Add A Tree ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -105,14 +105,14 @@ public class InsertTreeView extends View
 
         Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
 
-        Text type = new Text(" Tree Type : ");
+        Text type = new Text(" Barcode : ");
         type.setFont(myFont);
         type.setWrappingWidth(150);
         type.setTextAlignment(TextAlignment.RIGHT);
         grid.add(type, 0, 1);
 
-        treeType = new TextField();
-        grid.add(treeType, 1, 1);
+        barcodeVal = new TextField();
+        grid.add(barcodeVal, 1, 1);
 
         //Book publish
 
@@ -151,20 +151,16 @@ public class InsertTreeView extends View
                 clearErrorMessage();
 
                 Properties props = new Properties();
-                String treeTypeInput = treeType.getText();
+                String barcodeInput = barcodeVal.getText();
                 String notesInput = Notes.getText();
                 String statusInput = status.getValue().toString();
 
-                props.setProperty("treeType",treeTypeInput);
+                props.setProperty("barCode",barcodeInput);
                 props.setProperty("Notes",notesInput);
                 props.setProperty("Status",statusInput);
 
+                myModel.stateChangeRequest("TreeData", props);
 
-
-                Tree temp = new Tree(props);
-                System.out.println(temp);
-                temp.update();
-                displayMessage("Insert Tree Successfully");
 
             }
         });
@@ -179,7 +175,7 @@ public class InsertTreeView extends View
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("TreeCancelled", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
         doneCont.getChildren().add(doneButton);

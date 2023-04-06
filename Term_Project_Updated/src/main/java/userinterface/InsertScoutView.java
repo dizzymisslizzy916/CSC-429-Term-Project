@@ -243,7 +243,7 @@ public class InsertScoutView extends View
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("ScoutCancelled", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
         doneCont.getChildren().add(doneButton);

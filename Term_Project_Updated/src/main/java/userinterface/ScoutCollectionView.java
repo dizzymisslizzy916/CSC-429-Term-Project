@@ -166,7 +166,7 @@ public class ScoutCollectionView extends View {
         TableColumn scoutEmailColumn = new TableColumn("Email") ;
         scoutEmailColumn.setMinWidth(200);
         scoutEmailColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("phoneNumber"));
+                new PropertyValueFactory<ScoutTableModel, String>("email"));
 
         TableColumn scoutTroopIdColumn = new TableColumn("Troop ID") ;
         scoutTroopIdColumn.setMinWidth(200);
@@ -181,6 +181,16 @@ public class ScoutCollectionView extends View {
         tableOfScouts.getColumns().addAll(/*scoutNumberColumn, */
                 scoutLastNameColumn, scoutFirstNameColumn, scoutMiddleNameColumn, scoutDateOfBirthColumn,
                 scoutPhoneNumberColumn, scoutEmailColumn, scoutTroopIdColumn, statusColumn);
+
+        tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
+                    processScoutSelected();
+                }
+            }
+        });
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(115, 150);
@@ -212,6 +222,18 @@ public class ScoutCollectionView extends View {
         vbox.getChildren().add(btnContainer);
 
         return vbox;
+    }
+
+    protected void processScoutSelected()
+    {
+        ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
+
+        if(selectedItem != null)
+        {
+            String selectedScoutTroopId = selectedItem.getTroopId();
+
+            myModel.stateChangeRequest("ScoutSelected", selectedScoutTroopId);
+        }
     }
 
     public void updateState(String key, Object value)
