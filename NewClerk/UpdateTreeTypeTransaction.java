@@ -28,7 +28,7 @@ public class UpdateTreeTypeTransaction extends Transaction {
         }
     }
 
-    @Override
+
     protected void setDependencies() {
         Properties dependencies = new Properties();
         //dependencies.put("SearchTreeTypes", "TreeTypes,TransactionError");
@@ -39,7 +39,7 @@ public class UpdateTreeTypeTransaction extends Transaction {
         myRegistry.setDependencies(dependencies);
     }
 
-    @Override
+
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeTypeTransactionView");
 
@@ -64,7 +64,7 @@ public class UpdateTreeTypeTransaction extends Transaction {
         swapToView(currentScene);
     }
 
-    @Override
+
     public void stateChangeRequest(String key, Object value) {
         switch (key) {
             case "DoYourJob":
@@ -84,7 +84,6 @@ public class UpdateTreeTypeTransaction extends Transaction {
         myRegistry.updateSubscribers(key, this);
     }
 
-    @Override
     public Object getState(String key) {
         switch (key) {
             case "TransactionError":
