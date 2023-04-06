@@ -154,7 +154,52 @@ public class InsertTreeTypeView extends View
                 String barcodePrefixInput = barcodePrefix.getText();
                 System.out.println("Received desc: " + typeDescriptionInput +
                         "; cost: " + costInput + "; barcode prefix: " + barcodePrefixInput);
-                //System.out.print(typeDescriptionInput);
+
+                //Check the typeDescription
+                if ((typeDescriptionInput == null) || (typeDescriptionInput.length() == 0)) {
+                    displayErrorMessage("Error: Please enter a valid Description");
+                    return;
+                }
+                else if ((typeDescriptionInput.length() > 200)) {
+                    displayErrorMessage("Maximum description length reached.");
+                }
+
+                //Check the cost
+                if ((costInput == null) || (costInput.length() == 0)) {
+                    displayErrorMessage("Error: Please enter a valid cost");
+                    return;
+                }
+                else {
+                    try {
+                        Long.parseLong(costInput);
+                    }
+                    catch (Exception ex)
+                    {
+                        displayErrorMessage("ERROR: Cost must have only digits");
+                        return;
+                    }
+                }
+
+                //Check the barcode prefix
+
+                if ((barcodePrefixInput == null) || (barcodePrefixInput.length() == 0)) {
+                    displayErrorMessage("Error: Please enter a valid BarCode Prefix");
+                    return;
+                }
+                else if (barcodePrefixInput.length() != 2) {
+                    displayErrorMessage("ERROR: Please enter a 2-digit barcode prefix");
+                    return;
+                }
+                else {
+                    try {
+                        Long.parseLong(barcodePrefixInput);
+                    }
+                    catch (Exception ex)
+                    {
+                        displayErrorMessage("ERROR: BarCode Prefix must have only digits");
+                        return;
+                    }
+                }
 
 
                 props.setProperty("typeDescription", typeDescriptionInput);

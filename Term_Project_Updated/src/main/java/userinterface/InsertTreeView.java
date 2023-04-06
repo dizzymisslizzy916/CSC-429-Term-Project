@@ -125,17 +125,18 @@ public class InsertTreeView extends View
         Notes = new TextField();
         grid.add(Notes, 1, 2);
 
-        //Book status
-        Text treeStatus = new Text(" Tree Status : ");
-        treeStatus.setFont(myFont);
-        treeStatus.setWrappingWidth(150);
-        treeStatus.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeStatus,0, 3);
 
-        String statusGiven[] = {"Available", "Sold","Damaged"};
-        status = new ComboBox(FXCollections
-                .observableArrayList(statusGiven));
-        grid.add(status,1, 3);
+//        Text treeStatus = new Text(" Tree Status : ");
+//        treeStatus.setFont(myFont);
+//        treeStatus.setWrappingWidth(150);
+//        treeStatus.setTextAlignment(TextAlignment.RIGHT);
+//        grid.add(treeStatus,0, 3);
+//
+//        String statusGiven[] = {"Available", "Sold","Damaged"};
+//        status = new ComboBox(FXCollections
+//                .observableArrayList(statusGiven));
+//        //status.setValue("Available");
+//        grid.add(status,1, 3);
 
         //Submit and Done button
 
@@ -153,11 +154,31 @@ public class InsertTreeView extends View
                 Properties props = new Properties();
                 String barcodeInput = barcodeVal.getText();
                 String notesInput = Notes.getText();
-                String statusInput = status.getValue().toString();
+                //String statusInput = status.getValue().toString();
+
+                //Test validation barcode
+                if ((barcodeInput == null) || (barcodeInput.length() == 0)) {
+                    displayErrorMessage("Error: Please enter a valid barcode");
+                    return;
+                }
+                else if (barcodeInput.length() != 5) {
+                    displayErrorMessage("ERROR: Please enter a 5-digit barcode");
+                    return;
+                }
+                else {
+                    try {
+                        Long.parseLong(barcodeInput);
+                    }
+                    catch (Exception ex)
+                    {
+                        displayErrorMessage("ERROR: Barcode must have only digits");
+                        return;
+                    }
+                }
+
 
                 props.setProperty("barCode",barcodeInput);
                 props.setProperty("Notes",notesInput);
-                props.setProperty("Status",statusInput);
 
                 myModel.stateChangeRequest("TreeData", props);
 

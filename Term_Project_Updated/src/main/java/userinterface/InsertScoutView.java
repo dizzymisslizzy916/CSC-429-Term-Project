@@ -19,11 +19,17 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.collections.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 // project imports
 import impresario.IModel;
 import model.*;
+//import java.util.SimpleDateFormat;
 
 /** The class containing the Account View  for the ATM application */
 //==============================================================
@@ -96,7 +102,7 @@ public class InsertScoutView extends View
     //-------------------------------------------------------------
     private VBox createFormContent()
     {
-        VBox vbox = new VBox(10);
+        VBox vbox = new VBox(50);
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -183,18 +189,6 @@ public class InsertScoutView extends View
         troopId = new TextField();
         grid.add(troopId, 1, 7);
 
-        //Scout status
-        Text scoutStatus = new Text(" Scout Status : ");
-        scoutStatus.setFont(myFont);
-        scoutStatus.setWrappingWidth(150);
-        scoutStatus.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(scoutStatus,0, 8);
-
-        String statusGiven[] = {"Active", "Inactive"};
-        status = new ComboBox(FXCollections
-                .observableArrayList(statusGiven));
-        grid.add(status,1, 8);
-
         //Submit and Done button
 
         HBox doneCont = new HBox(10);
@@ -216,7 +210,64 @@ public class InsertScoutView extends View
                 String phoneNumberInput = phoneNumber.getText();
                 String emailInput = email.getText();
                 String troopIdInput = troopId.getText();
-                String statusInput = status.getValue().toString();
+
+                //Email must contain @
+                if((emailInput == null) || (emailInput.length() == 0)) {
+                    displayMessage("ERROR: Please enter a valid email.");
+                    return;
+                }
+                else if (!emailInput.contains("@")) {
+                    displayErrorMessage("ERROR: Please enter a valid email /n in the form xxx@xxx.xxx");
+                    return;
+                }
+
+                //TroopId is 5 digit
+                if ((troopIdInput == null) || (troopIdInput.length() == 0)) {
+                    displayErrorMessage("Error: Please enter a valid troopId");
+                    return;
+                }
+                else if (troopIdInput.length() != 5) {
+                    displayErrorMessage("ERROR: Please enter a 5-digit troopId");
+                    return;
+                }
+                else {
+                    try {
+                        Long.parseLong(troopIdInput);
+                    }
+                    catch (Exception ex)
+                    {
+                        displayErrorMessage("ERROR: TroopId must have only digits");
+                        return;
+                    }
+                }
+
+                //Check Date of Birth
+                if (!dateOfBirthInput.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    displayErrorMessage("ERROR: Date of Birth input is not valid /n should be in YYYY-MM-DD");
+                    return;
+                }
+
+                //Phone Number Check
+
+                if ((phoneNumberInput == null) || (phoneNumberInput.length() == 0)) {
+                    displayErrorMessage("ERROR: Please enter a 10-digit phone number");
+                    return;
+                }
+                else if (phoneNumberInput.length() != 10) {
+                        displayErrorMessage("ERROR: Please enter a 10-digit phone number");
+                        return;
+                }
+                else {
+                        try {
+                            Long.parseLong(phoneNumberInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            displayErrorMessage("ERROR: Phone number must have only digits");
+                            return;
+                        }
+
+                    }
 
                 props.setProperty("lastName",lastNameInput);
                 props.setProperty("firstName",firstNameInput);
@@ -225,11 +276,9 @@ public class InsertScoutView extends View
                 props.setProperty("phoneNumber",phoneNumberInput);
                 props.setProperty("email",emailInput);
                 props.setProperty("troopId",troopIdInput);
-                props.setProperty("status",statusInput);
 
-                Scout temp = new Scout(props);
-                temp.update();
-                displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
+                myModel.stateChangeRequest("ScoutData", props);
+
             }
         });
         doneCont.getChildren().add(submitButton);

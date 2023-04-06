@@ -108,7 +108,7 @@ public class LibrarianView extends View {
         });
         grid.add(insertNewScoutButton, 0, 0);
 
-        insertNewTreeButton = new Button("Register A Tree");
+        insertNewTreeButton = new Button("Add A Tree");
         insertNewTreeButton.setOnAction ((ActionEvent e) -> {
 
             myModel.stateChangeRequest("InsertTree", null);
@@ -116,7 +116,7 @@ public class LibrarianView extends View {
         });
         grid.add(insertNewTreeButton, 1, 0);
 
-        insertNewTreeTypeButton = new Button("Register A Tree Type");
+        insertNewTreeTypeButton = new Button("Add A Tree Type");
         insertNewTreeTypeButton.setOnAction ((ActionEvent e) -> {
 
             myModel.stateChangeRequest("InsertTreeType", null);
