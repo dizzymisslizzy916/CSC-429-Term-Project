@@ -124,7 +124,7 @@ public class TreeTypeCollection  extends EntityBase implements IView
     }
 
     //----------------------------------------------------------
-    public TreeType retrieve(String Id) //input scot ID
+    public TreeType retrieve(String Id)
     {
         TreeType retValue = null;
         for (int cnt = 0; cnt < treeTypeList.size(); cnt++) //for all tree type in the collection

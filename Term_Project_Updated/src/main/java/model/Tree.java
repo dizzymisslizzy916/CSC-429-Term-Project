@@ -28,6 +28,8 @@ public class Tree extends EntityBase implements IView
 
     private String updateStatusMessage = "";
 
+    private boolean oldFlag = true;
+
     // constructor for this class
     //----------------------------------------------------------
     public Tree(String barCode)
@@ -36,7 +38,7 @@ public class Tree extends EntityBase implements IView
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (barCode = " + barCode + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (barCode = '" + barCode + "')";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -103,6 +105,12 @@ public class Tree extends EntityBase implements IView
     }
 
     //-----------------------------------------------------------------------------------
+    public void setOldFlag(boolean val)
+    {
+        oldFlag = val;
+    }
+
+    //-----------------------------------------------------------------------------------
     private void setDependencies()
     {
         dependencies = new Properties();
@@ -113,7 +121,7 @@ public class Tree extends EntityBase implements IView
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("status") == true)
+        if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
 
         return persistentState.getProperty(key);
@@ -144,26 +152,27 @@ public class Tree extends EntityBase implements IView
     {
         try
         {
-            if (persistentState.getProperty("barCode") != null)
+            if (oldFlag == true)
             {
                 Properties whereClause = new Properties();
                 whereClause.setProperty("barCode",
                         persistentState.getProperty("barCode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Bar Code: " + persistentState.getProperty("barCode") + " updated successfully in database!";
+                updateStatusMessage = "Tree with barcode: " + persistentState.getProperty("barCode") + " updated successfully in database!";
             }
             else
             {
-                Integer accountNumber =
-                        insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("barCode", "" + accountNumber.intValue());
-                updateStatusMessage = "Bar Code for new Tree: " +  persistentState.getProperty("barCode")
+                insertPersistentState(mySchema, persistentState);
+                oldFlag = true;
+                updateStatusMessage = "Tree with barcode: " +  persistentState.getProperty("barCode")
                         + "installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
+            System.out.println(ex);
             updateStatusMessage = "Error in installing tree data in database!";
+
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }

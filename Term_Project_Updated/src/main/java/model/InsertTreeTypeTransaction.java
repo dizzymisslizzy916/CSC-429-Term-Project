@@ -55,13 +55,11 @@ public class InsertTreeTypeTransaction extends Transaction
         String sentBPfix = props.getProperty("barcodePrefix");
         try
         {
-            System.out.println("Getting here 2");
             TreeType oldtreeType = new TreeType(sentBPfix);
             transactionErrorMessage = "ERROR: Tree type with barcode prefix: " + sentBPfix + " already exists";
         }
         catch (Exception ex)
         {
-            System.out.println("Getting here 3");
             myTreeType = new TreeType(props);
             myTreeType.update();
             transactionErrorMessage = (String)myTreeType.getState("UpdateStatusMessage");
@@ -84,7 +82,6 @@ public class InsertTreeTypeTransaction extends Transaction
     //-----------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-        System.out.println("Getting here 0");
         if (key.equals("DoYourJob") == true)
         {
             doYourJob();
@@ -92,7 +89,6 @@ public class InsertTreeTypeTransaction extends Transaction
         else
         if (key.equals("TreeTypeData") == true)
         {
-            System.out.println("Getting here 1");
             processTransaction((Properties)value);
         }
 

@@ -30,13 +30,13 @@ public class Scout extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
-    public Scout(String scoutId)
+    public Scout(String troopId) //quey with troopId, not scoutId- see sequence diagrams
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (troopId = " + troopId + ")";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -49,7 +49,7 @@ public class Scout extends EntityBase implements IView
             if (size != 1)
             {
                 throw new InvalidPrimaryKeyException("Multiple scouts matching id : "
-                        + scoutId + " found.");
+                        + troopId + " found.");
             }
             else
             {
@@ -75,8 +75,8 @@ public class Scout extends EntityBase implements IView
         // If no account found for this user name, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No scout matching id : "
-                    + scoutId + " found.");
+            throw new InvalidPrimaryKeyException("No scout matching troop id : "
+                    + troopId + " found.");
         }
     }
 
@@ -157,7 +157,7 @@ public class Scout extends EntityBase implements IView
                 Integer accountNumber =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("scoutId", "" + accountNumber.intValue());
-                updateStatusMessage = "ScoutId for new Sook: " +  persistentState.getProperty("scoutId")
+                updateStatusMessage = "ScoutId for new Scout: " +  persistentState.getProperty("scoutId")
                         + "installed successfully in database!";
             }
         }
@@ -214,4 +214,3 @@ public class Scout extends EntityBase implements IView
         }
     }
 }
-

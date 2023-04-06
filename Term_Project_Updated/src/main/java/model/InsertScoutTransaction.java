@@ -52,17 +52,17 @@ public class InsertScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
+        String scoutTroopId = props.getProperty("troopId");
         try
         {
-            scout = new Scout(props);
-            scout.update();
+            TreeType oldScout = new TreeType(scoutTroopId);
+            transactionErrorMessage = "ERROR: Scout with troop Id: " + scoutTroopId + " already exists";
         }
         catch (Exception ex)
         {
-            transactionErrorMessage = "Error in inserting a scout.";
-            new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                    "Failed to insert a scout.",
-                    Event.ERROR);
+            scout = new Scout(props);
+            scout.update();
+            transactionErrorMessage = (String)scout.getState("UpdateStatusMessage");
 
         }
     }
@@ -71,11 +71,6 @@ public class InsertScoutTransaction extends Transaction
     public Object getState(String key)
     {
         if (key.equals("TransactionError") == true)
-        {
-            return transactionErrorMessage;
-        }
-        else
-        if (key.equals("UpdateStatusMessage") == true)
         {
             return transactionErrorMessage;
         }

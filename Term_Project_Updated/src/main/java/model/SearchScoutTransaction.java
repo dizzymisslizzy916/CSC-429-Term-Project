@@ -19,7 +19,7 @@ import userinterface.ViewFactory;
 //==============================================================
 public class SearchScoutTransaction extends Transaction
 {
-    private Scout scout; // needed for GUI only
+    private Scout selectedScout; // needed for GUI only
 
     // GUI Components
 
@@ -58,7 +58,6 @@ public class SearchScoutTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(String fName) {
         try {
-            System.out.println("I'm in process transaction");
             scoutCollection.findScoutsWithNameLike(fName);
         }
         catch (Exception excep)
@@ -78,6 +77,21 @@ public class SearchScoutTransaction extends Transaction
         else if (key.equals("ScoutList") == true)
         {
             return scoutCollection;
+        }
+        else if (key.equals("SelectedScout") == true) {
+            return selectedScout;
+        }
+        else if (selectedScout != null) {
+            Object val = selectedScout.getState(key);
+            if (val != null) {
+                return val;
+            }
+        }
+        else if (scoutCollection != null) {
+            Object val = scoutCollection.getState(key);
+            if (val != null) {
+                return val;
+            }
         }
 
         return null;
@@ -102,6 +116,11 @@ public class SearchScoutTransaction extends Transaction
             processTransaction((String)value);
             createAndShowScoutCollectionView();
         }
+        else if (key.equals("ScoutSelected") == true) {
+            String scoutId = (String)value;
+            selectedScout = scoutCollection.retrieve(scoutId);
+            //DO SOMETHING TO UPDATE THE SCOUT
+        }
 
 
         myRegistry.updateSubscribers(key, this);
@@ -115,6 +134,9 @@ public class SearchScoutTransaction extends Transaction
 
         swapToView(newScene);
     }
+
+
+
     /**
      * Create the view of this class. And then the super-class calls
      * swapToView() to display the view in the stage

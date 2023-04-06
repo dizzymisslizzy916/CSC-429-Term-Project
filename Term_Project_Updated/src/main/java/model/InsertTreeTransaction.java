@@ -18,7 +18,7 @@ import userinterface.ViewFactory;
 //==============================================================
 public class InsertTreeTransaction extends Transaction
 {
-    private Tree tree; // needed for GUI only
+    private Tree myTree; // needed for GUI only
 
     // GUI Components
 
@@ -52,19 +52,33 @@ public class InsertTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-        try
-        {
-            tree = new Tree(props);
-            tree.update();
+        System.out.println("About to insert a tree");
+        String barcodeVal = props.getProperty("barCode");
+        String barcodePrefix = barcodeVal.substring(0,2);
+        try {
+            TreeType tt = new TreeType(barcodePrefix);
+            String treeTypeId = (String)tt.getState("treeTypeId");
+            props.setProperty("treeType", treeTypeId);
+            try {
+                Tree t = new Tree(barcodeVal);
+                System.out.println("Found old tree with barcode: " + barcodeVal);
+                transactionErrorMessage = "ERROR: Tree with barcode: " + barcodeVal + " already exists!";
+            }
+            catch (InvalidPrimaryKeyException except)
+            {
+                System.out.println("Getting ready to actually insert new tree");
+                myTree = new Tree(props);
+                myTree.setOldFlag(false);
+                myTree.update();
+                transactionErrorMessage = (String)myTree.getState("UpdateStatusMessage");
+            }
         }
-        catch (Exception ex)
+        catch (InvalidPrimaryKeyException excep)
         {
-            transactionErrorMessage = "Error in inserting tree.";
-            new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                    "Failed to insert a tree.",
-                    Event.ERROR);
+            System.out.println(excep);
+            transactionErrorMessage = "ERROR: Invalid barcode - no associated tree type found!";
+        }
 
-        }
     }
 
     //-----------------------------------------------------------
@@ -74,11 +88,7 @@ public class InsertTreeTransaction extends Transaction
         {
             return transactionErrorMessage;
         }
-        else
-        if (key.equals("UpdateStatusMessage") == true)
-        {
-            return transactionErrorMessage;
-        }
+
         return null;
     }
 
