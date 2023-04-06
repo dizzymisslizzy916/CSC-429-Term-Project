@@ -18,7 +18,7 @@ import userinterface.ViewFactory;
 //==============================================================
 public class InsertScoutTransaction extends Transaction
 {
-    private Scout scout; // needed for GUI only
+    private Scout myScout; // needed for GUI only
 
     // GUI Components
 
@@ -40,7 +40,7 @@ public class InsertScoutTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("ScoutData", "TransactionError");
+        dependencies.setProperty("ScoutData", "UpdateStatusMessage");
         dependencies.setProperty("OK", "CancelTransaction");
 
         myRegistry.setDependencies(dependencies);
@@ -52,20 +52,21 @@ public class InsertScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-        String scoutTroopId = props.getProperty("troopId");
+        String sentTroopId = props.getProperty("troopId");
         try
         {
-            TreeType oldScout = new TreeType(scoutTroopId);
-            transactionErrorMessage = "ERROR: Scout with troop Id: " + scoutTroopId + " already exists";
+            Scout s = new Scout(sentTroopId);
+            transactionErrorMessage = "ERROR: Scout with troop Id: " + sentTroopId + " already exists";
         }
         catch (Exception ex)
         {
-            scout = new Scout(props);
-            scout.update();
-            transactionErrorMessage = (String)scout.getState("UpdateStatusMessage");
+            myScout = new Scout(props);
+            myScout.update();
+            transactionErrorMessage = (String)myScout.getState("UpdateStatusMessage");
 
         }
     }
+
 
     //-----------------------------------------------------------
     public Object getState(String key)

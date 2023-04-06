@@ -2,11 +2,7 @@
 package model;
 
 // system imports
-import userinterface.InsertPatronView;
 
-
-import java.util.Vector;
-import javax.swing.JFrame;
 
 // project imports
 

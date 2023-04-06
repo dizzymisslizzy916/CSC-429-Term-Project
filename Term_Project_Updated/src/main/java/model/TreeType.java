@@ -158,7 +158,7 @@ public class TreeType extends EntityBase implements IView
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("treeTypeId", "" + treetypeId);
                 updateStatusMessage = "Id for new Tree Type: " +  persistentState.getProperty("treeTypeId")
-                        + "installed successfully in database!";
+                        + " installed successfully in database!";
             }
         }
         catch (SQLException ex)

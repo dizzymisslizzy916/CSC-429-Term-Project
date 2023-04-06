@@ -52,7 +52,6 @@ public class InsertTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-        System.out.println("About to insert a tree");
         String barcodeVal = props.getProperty("barCode");
         String barcodePrefix = barcodeVal.substring(0,2);
         try {
@@ -61,12 +60,10 @@ public class InsertTreeTransaction extends Transaction
             props.setProperty("treeType", treeTypeId);
             try {
                 Tree t = new Tree(barcodeVal);
-                System.out.println("Found old tree with barcode: " + barcodeVal);
                 transactionErrorMessage = "ERROR: Tree with barcode: " + barcodeVal + " already exists!";
             }
             catch (InvalidPrimaryKeyException except)
             {
-                System.out.println("Getting ready to actually insert new tree");
                 myTree = new Tree(props);
                 myTree.setOldFlag(false);
                 myTree.update();

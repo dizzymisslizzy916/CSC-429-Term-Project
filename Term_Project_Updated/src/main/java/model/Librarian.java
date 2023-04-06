@@ -100,9 +100,6 @@ public class Librarian implements IView, IModel
 
         else if (key.equals("InsertScout") == true)
         {
-//            System.out.println(key);
-//            String transType = key;
-//            createAndShowScoutView();
               doTransaction(key);
 
         }
@@ -180,37 +177,7 @@ public class Librarian implements IView, IModel
 
     }
 
-    private void createAndShowScoutView()
-    {
-        Scene currentScene = (Scene)myViews.get("InsertScoutView");
 
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("InsertScoutView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("InsertScoutView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowTreeView()
-    {
-        Scene currentScene = (Scene)myViews.get("InsertTreeView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("InsertTreeView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("InsertTreeView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
 
 
     /** Register objects to receive state updates. */

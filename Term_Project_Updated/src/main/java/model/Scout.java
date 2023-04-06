@@ -113,7 +113,7 @@ public class Scout extends EntityBase implements IView
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("status") == true)
+        if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
 
         return persistentState.getProperty(key);
@@ -152,20 +152,20 @@ public class Scout extends EntityBase implements IView
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "ScoutId: " + persistentState.getProperty("scoutId") + " updated successfully in database!";
             }
+
             else
             {
                 Integer accountNumber =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("scoutId", "" + accountNumber.intValue());
                 updateStatusMessage = "ScoutId for new Scout: " +  persistentState.getProperty("scoutId")
-                        + "installed successfully in database!";
+                        + " installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
             updateStatusMessage = "Error in installing scout data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
 
