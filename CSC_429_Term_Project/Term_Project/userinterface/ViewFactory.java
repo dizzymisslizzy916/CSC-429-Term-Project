@@ -11,10 +11,10 @@ public class ViewFactory {
 		{
 			return new DeleteScoutConfirmView(model);
 		}
-		else if(viewName.equals("ScoutInfoEntryView") == true)
+		/*else if(viewName.equals("InsertScoutTransactionView") == true)
 		{
-			return new ScoutInfoEntryView(model);
-		}
+			return new InsertScoutTransactionView(model);
+		}*/
 		else if(viewName.equals("ScoutInfoEntryView") == true)
 		{
 			return new ScoutInfoEntryView(model);

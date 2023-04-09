@@ -51,12 +51,22 @@ public class InsertScoutTransaction extends Transaction
 
 
 	//----------------------------------------------------------
-	public void processTransaction(Properties props)
+	public void processTransaction(Properties props) //sequence diagram steps 8-13
 	{
-        myScout = new Scout(props);
-        myScout.update();
-	System.out.println("Scout inserted successfully");
-        scoutUpdateStatusMessage = (String)myScout.getState("UpdateStatusMessage");
+		String troopId = props.getProperty("troopId");
+		try
+		{
+			Scout s = new Scout(troopId);  //instantiate scoutinfo.troopId
+			scoutUpdateStatusMessage = "ERROR: Scout with troopID: " + troopId + " already exists!"; 
+		}
+		catch (InvalidPrimaryKeyException ex) 
+		{
+			myScout = new Scout(props); //create(scout info)
+			myScout.update(); //insert
+			System.out.println("Scout inserted successfully"); //scout added
+			scoutUpdateStatusMessage = (String)myScout.getState("UpdateStatusMessage");
+		}
+		
 		
 	}
 
@@ -78,7 +88,6 @@ public class InsertScoutTransaction extends Transaction
 	//-----------------------------------------------------------
 	public void stateChangeRequest(String key, Object value)
 	{
-		// DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
 
 		if (key.equals("DoYourJob") == true)
 		{
@@ -101,14 +110,14 @@ public class InsertScoutTransaction extends Transaction
 	protected Scene createView()
 	{
 		System.out.println("About to create insert scout view in Insert Scout Transaction");
-		Scene currentScene = myViews.get("InsertScoutTransactionView");
+		Scene currentScene = myViews.get("ScoutInfoEntryView");
 
 		if (currentScene == null)
 		{
 			// create our initial view
 			View newView = ViewFactory.createView("ScoutInfoEntryView", this);
 			currentScene = new Scene(newView);
-			myViews.put("InsertScoutTransactionView", currentScene);
+			myViews.put("ScoutInfoEntryView", currentScene);
 
 			return currentScene;
 		}
