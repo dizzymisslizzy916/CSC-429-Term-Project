@@ -15,7 +15,7 @@ public class ViewFactory {
 			return new InsertTreeView(model);
 		}
 		else if (viewName.equals("InsertTreeTypeView") == true) {
-			return new InsertTreeTypeView(model);
+			return null;// new InsertTreeTypeView(model);
 		}
 		else if (viewName.equals("SearchScoutView") == true) {
 			return new SearchScoutView(model);

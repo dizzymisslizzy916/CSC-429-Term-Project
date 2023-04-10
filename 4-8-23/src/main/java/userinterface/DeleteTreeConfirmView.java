@@ -38,21 +38,19 @@ public class DeleteTreeConfirmView extends View {
         Button cancel = (Button) root.lookup("#cancel");
         Button confirm = (Button) root.lookup("#confirm");
 
-        //TODO - model implementation
-        Tree tree = (Tree) myModel.getState("TreeDelete");
-        treeType.setText(tree.getState("treeType"));
-        status.setText(tree.getState("Status"));
-        notes.setText(tree.getState("Notes"));
+        Tree tree = (Tree) myModel.getState("SelectedTree");
+        treeType.setText((String) tree.getState("treeType"));
+        status.setText((String) tree.getState("Status"));
+        notes.setText((String) tree.getState("Notes"));
 
         Platform.runLater(anchorPane::requestFocus);
 
         cancel.setOnAction(e -> {
             //TODO - model implementation
-            myModel.stateChangeRequest("TransactionChoiceView", null);
+            myModel.stateChangeRequest("CancelTransaction", null);
         });
 
         confirm.setOnAction(e -> {
-            //TODO - model implementation
             myModel.stateChangeRequest("DeleteTree", tree);
         });
 

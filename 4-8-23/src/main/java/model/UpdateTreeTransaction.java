@@ -106,6 +106,12 @@ public void stateChangeRequest(String key, Object value)
         String barCode = (String)value;
         selectedTree = treeCollection.retrieve(barCode);
         //DO SOMETHING TO UPDATE THE TREE
+
+    }
+    else if (key.equals("DeleteTree")) {
+        String barCode = (String) value;
+        selectedTree = treeCollection.retrieve(barCode);
+        createAndShowDeleteTreeConfirmView();
     }
 
     myRegistry.updateSubscribers(key, this);
@@ -113,6 +119,13 @@ public void stateChangeRequest(String key, Object value)
     protected void createAndShowTreeCollectionView()
     {
         View v = ViewFactory.createView("TreeCollectionView", this);
+        Scene newScene = new Scene(v);
+
+        swapToView(newScene);
+    }
+
+    private void createAndShowDeleteTreeConfirmView() {
+        View v = ViewFactory.createView("DeleteTreeConfirmView", this);
         Scene newScene = new Scene(v);
 
         swapToView(newScene);
