@@ -98,12 +98,11 @@ public class DeleteScoutTransaction extends Transaction
 		else
 		if (key.equals("ScoutSearch") == true)
 		{
-			processTransaction((String)value);
 			createAndShowScoutCollectionView();
 		}
 		else if (key.equals("SelectedScout") == true) {
 			selectedScout = scoutCollection.retrieveByTroopId((String)value);
-			createAndShowUpdateScoutView();
+			createAndShowDeleteScoutConfirmView();
 		}
 		else if (key.equals("DeleteScout") == true) {
 			processTransaction((String)value);
