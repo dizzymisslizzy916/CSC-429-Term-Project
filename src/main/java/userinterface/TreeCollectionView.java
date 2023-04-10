@@ -37,20 +37,20 @@ import java.util.Enumeration;
 
 // project imports
 import impresario.IModel;
-import model.Scout;
-import model.ScoutCollection;
+import model.Tree;
+import model.TreeCollection;
 
 
-public class ScoutCollectionView extends View {
+public class TreeCollectionView extends View {
 
-    protected TableView<ScoutTableModel> tableOfScouts;
+    protected TableView<TreeTableModel> tableOfTrees;
     protected Button cancelButton;
 
     protected MessageView statusLog;
 
-    public ScoutCollectionView(IModel wsc)
+    public TreeCollectionView(IModel wsc)
     {
-        super(wsc, "ScoutCollectionView");
+        super(wsc, "TreeCollectionView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -75,30 +75,29 @@ public class ScoutCollectionView extends View {
 
     protected void getEntryTableModelValues()
     {
-        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
+        //System.out.println("getEntryTableModelValues: are you getting here, stupid?");
+        ObservableList<TreeTableModel> tableData = FXCollections.observableArrayList();
         try
         {
-            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
+            TreeCollection treeCollection = (TreeCollection)myModel.getState("TreeList");
 
-            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            Vector entryList = (Vector)treeCollection.getState("Trees");
             Enumeration entries = entryList.elements();
 
             while (entries.hasMoreElements() == true)
             {
-                Scout nextScout = (Scout)entries.nextElement();
-                Vector<String> view = nextScout.getEntryListView();
+                Tree nextTree = (Tree)entries.nextElement();
+                Vector<String> view = nextTree.getEntryListView();
 
                 // add this list entry to the list
-                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+                TreeTableModel nextTableRowData = new TreeTableModel(view);
                 tableData.add(nextTableRowData);
 
             }
 
-            tableOfScouts.setItems(tableData);
+            tableOfTrees.setItems(tableData);
         }
         catch (Exception e) {//SQLException e) {
-            System.out.println(e);
-            e.printStackTrace();
             // Need to handle this exception
         }
     }
@@ -108,7 +107,7 @@ public class ScoutCollectionView extends View {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" BROCKPORT TREE SYSTEM ");
+        Text titleText = new Text(" BROCKPORT TREE ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -128,73 +127,41 @@ public class ScoutCollectionView extends View {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text("LIST OF SCOUTS");
+        Text prompt = new Text("LIST OF TREES");
         prompt.setWrappingWidth(350);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        tableOfScouts = new TableView<ScoutTableModel>();
-        tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableOfTrees = new TableView<TreeTableModel>();
+        tableOfTrees.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+//        TableColumn barCodeColumn = new TableColumn("Bar Code") ;
+//        barCodeColumn.setMinWidth(200);
+//        barCodeColumn.setCellValueFactory(
+//                new PropertyValueFactory<TreeTableModel, String>("barCode"));
 
-        TableColumn scoutLastNameColumn = new TableColumn("Last Name") ;
-        scoutLastNameColumn.setMinWidth(200);
-        scoutLastNameColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("lastName"));
+        TableColumn treeTypeColumn = new TableColumn("Tree Type") ;
+        treeTypeColumn.setMinWidth(100);
+        treeTypeColumn.setCellValueFactory(
+                new PropertyValueFactory<TreeTableModel, String>("treeType"));
 
-        TableColumn scoutFirstNameColumn = new TableColumn("First Name") ;
-        scoutFirstNameColumn.setMinWidth(200);
-        scoutFirstNameColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("firstName"));
-
-        TableColumn scoutMiddleNameColumn = new TableColumn("Middle Name") ;
-        scoutMiddleNameColumn.setMinWidth(200);
-        scoutMiddleNameColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("middleName"));
-
-        TableColumn scoutDateOfBirthColumn = new TableColumn("Date of Birth") ;
-        scoutDateOfBirthColumn.setMinWidth(200);
-        scoutDateOfBirthColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("dateOfBirth"));
-
-        TableColumn scoutPhoneNumberColumn = new TableColumn("Phone Number") ;
-        scoutPhoneNumberColumn.setMinWidth(200);
-        scoutPhoneNumberColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("phoneNumber"));
-
-        TableColumn scoutEmailColumn = new TableColumn("Email") ;
-        scoutEmailColumn.setMinWidth(200);
-        scoutEmailColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("email"));
-
-        TableColumn scoutTroopIdColumn = new TableColumn("Troop ID") ;
-        scoutTroopIdColumn.setMinWidth(200);
-        scoutTroopIdColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("troopId"));
+        TableColumn notesColumn = new TableColumn("Notes") ;
+        notesColumn.setMinWidth(100);
+        notesColumn.setCellValueFactory(
+                new PropertyValueFactory<TreeTableModel, String>("Notes"));
 
         TableColumn statusColumn = new TableColumn("Status") ;
         statusColumn.setMinWidth(100);
         statusColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("status"));
+                new PropertyValueFactory<TreeTableModel, String>("status"));
 
-        tableOfScouts.getColumns().addAll(/*scoutNumberColumn, */
-                scoutLastNameColumn, scoutFirstNameColumn, scoutMiddleNameColumn, scoutDateOfBirthColumn,
-                scoutPhoneNumberColumn, scoutEmailColumn, scoutTroopIdColumn, statusColumn);
-
-        tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event)
-            {
-                if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-                    processScoutSelected();
-                }
-            }
-        });
+        tableOfTrees.getColumns().addAll(
+               treeTypeColumn, notesColumn, statusColumn);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(115, 150);
-        scrollPane.setContent(tableOfScouts);
+        scrollPane.setContent(tableOfTrees);
 
         cancelButton = new Button("Back");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -209,7 +176,7 @@ public class ScoutCollectionView extends View {
                  */
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelSearchScouts", null);
+                myModel.stateChangeRequest("CancelSearchTrees", null);
             }
         });
 
@@ -222,17 +189,6 @@ public class ScoutCollectionView extends View {
         vbox.getChildren().add(btnContainer);
 
         return vbox;
-    }
-
-    //Try to do remove function
-
-    protected void processScoutSelected()
-    {
-        System.out.println("Did you get here Anh?");
-        ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
-        String selectedTroopId = selectedItem.getTroopId();
-        System.out.println("You here Anh?");
-        myModel.stateChangeRequest("SelectedScout", selectedItem);
     }
 
     public void updateState(String key, Object value)

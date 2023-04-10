@@ -16,11 +16,11 @@ import impresario.IView;
 
 
 
-/** The class containing the Scout */
+/** The class containing the TreeType */
 //==============================================================
-public class Scout extends EntityBase implements IView
+public class TreeType extends EntityBase implements IView
 {
-    private static final String myTableName = "Scout";
+    private static final String myTableName = "TreeType";
 
     protected Properties dependencies;
 
@@ -30,13 +30,13 @@ public class Scout extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
-    public Scout(String troopId) //quey with troopId, not scoutId- see sequence diagrams
+    public TreeType(String bf)
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (troopId = " + troopId + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (barcodePrefix = '" + bf + "')";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -48,8 +48,8 @@ public class Scout extends EntityBase implements IView
             // There should be EXACTLY one account. More than that is an error
             if (size != 1)
             {
-                throw new InvalidPrimaryKeyException("Multiple scouts matching id : "
-                        + troopId + " found.");
+                throw new InvalidPrimaryKeyException("Multiple Tree Type matching barcode prefix: "
+                        + bf + " found.");
             }
             else
             {
@@ -62,7 +62,7 @@ public class Scout extends EntityBase implements IView
                 {
                     String nextKey = (String)allKeys.nextElement();
                     String nextValue = retrievedAccountData.getProperty(nextKey);
-                    // scoutId = Integer.parseInt(retrievedAccountData.getProperty("scoutId"));
+                    // Id = Integer.parseInt(retrievedAccountData.getProperty("Id"));
 
                     if (nextValue != null)
                     {
@@ -75,15 +75,15 @@ public class Scout extends EntityBase implements IView
         // If no account found for this user name, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No scout matching troop id : "
-                    + troopId + " found.");
+            throw new InvalidPrimaryKeyException("No Tree Type matching barcode prefix : "
+                    + bf + " found.");
         }
     }
 
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-    public Scout(Properties props)
+    public TreeType(Properties props)
     {
         super(myTableName);
 
@@ -144,28 +144,28 @@ public class Scout extends EntityBase implements IView
     {
         try
         {
-            if (persistentState.getProperty("scoutId") != null)
+            if (persistentState.getProperty("treeTypeId") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutId",
-                        persistentState.getProperty("scoutId"));
+                whereClause.setProperty("treeTypeId",
+                        persistentState.getProperty("treeTypeId"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "ScoutId: " + persistentState.getProperty("scoutId") + " updated successfully in database!";
+                updateStatusMessage = "Id: " + persistentState.getProperty("treeTypeId") + " updated successfully in database!";
             }
-
             else
             {
-                Integer accountNumber =
+                Integer treetypeId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("scoutId", "" + accountNumber.intValue());
-                updateStatusMessage = "ScoutId for new Scout: " +  persistentState.getProperty("scoutId")
+                persistentState.setProperty("treeTypeId", "" + treetypeId);
+                updateStatusMessage = "Id for new Tree Type: " +  persistentState.getProperty("treeTypeId")
                         + " installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
-            updateStatusMessage = "Error in installing scout data in database!";
+            updateStatusMessage = "Error in installing Tree Type data in database!";
         }
+        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
 
@@ -178,16 +178,9 @@ public class Scout extends EntityBase implements IView
     {
         Vector<String> v = new Vector<String>();
 
-        //v.addElement(persistentState.getProperty("scoutId"));
-        v.addElement(persistentState.getProperty("lastName"));
-        v.addElement(persistentState.getProperty("firstName"));
-        v.addElement(persistentState.getProperty("middleName"));
-        v.addElement(persistentState.getProperty("dateOfBirth"));
-        v.addElement(persistentState.getProperty("phoneNumber"));
-        v.addElement(persistentState.getProperty("email"));
-        v.addElement(persistentState.getProperty("troopId"));
-        v.addElement(persistentState.getProperty("status"));
-        v.addElement(persistentState.getProperty("dateStatusUpdated"));
+        v.addElement(persistentState.getProperty("typeDescription"));
+        v.addElement(persistentState.getProperty("cost"));
+        v.addElement(persistentState.getProperty("barcodePrefix"));
 
 
         return v;
@@ -195,14 +188,14 @@ public class Scout extends EntityBase implements IView
 
     //-----------------------------------------------------------------------------------
     public String toString() {
-        return "Scout Name " + persistentState.getProperty("lastName") + ", " + persistentState.getProperty("firstName") +
-                "; Date Of Birth: " + persistentState.getProperty("dateOfBirth") +
-                "; Email: " + persistentState.getProperty("email");
+        return "Tree Type Description " + persistentState.getProperty("typeDescription") +
+                ", Cost: " + persistentState.getProperty("cost") +
+                "; Bar Code Prefix: " + persistentState.getProperty("barcodePrefix");
     }
 
-    public static int compare(Scout a, Scout b) {
-        String aNum = (String)a.getState("scoutId");
-        String bNum = (String)b.getState("scoutId");
+    public static int compare(TreeType a, TreeType b) {
+        String aNum = (String)a.getState("treeTypeId");
+        String bNum = (String)b.getState("treeTypeId");
 
         return aNum.compareTo(bNum);
     }
@@ -214,3 +207,4 @@ public class Scout extends EntityBase implements IView
         }
     }
 }
+

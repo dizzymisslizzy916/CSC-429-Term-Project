@@ -1,7 +1,6 @@
 package userinterface;
 
 import impresario.IModel;
-import model.Book;
 
 //==============================================================================
 public class ViewFactory {
@@ -14,28 +13,23 @@ public class ViewFactory {
 		else if (viewName.equals("InsertScoutView") == true) {
 			return new InsertScoutView(model);
 		}
+		else if (viewName.equals("InsertTreeView") == true) {
+			return new InsertTreeView(model);
+		}
+		else if (viewName.equals("InsertTreeTypeView") == true) {
+			return new InsertTreeTypeView(model);
+		}
 		else if (viewName.equals("SearchScoutView") == true) {
 			return new SearchScoutView(model);
 		}
+		else if (viewName.equals("ScoutCollectionView") == true) {
+			return new ScoutCollectionView(model);
+		}
+		else if (viewName.equals("UpdateScoutView") == true) {
+			return new UpdateScoutView(model);
+		}
 
-		else if (viewName.equals("InsertPatronView") == true) {
-			return new InsertPatronView(model);
-		}
-		else if (viewName.equals("InsertBookView") == true) {
-			return new InsertBookView(model);
-		}
-		else if (viewName.equals("SearchBookView") == true) {
-			return new SearchBookView(model);
-		}
-		else if (viewName.equals("SearchPatronView") == true) {
-			return new SearchPatronView(model);
-		}
-		else if (viewName.equals("BookCollectionView") == true) {
-			return new BookCollectionView(model);
-		}
-		else if (viewName.equals("PatronCollectionView") == true) {
-			return new PatronCollectionView(model);
-		}
+
 
 		else
 			return null;

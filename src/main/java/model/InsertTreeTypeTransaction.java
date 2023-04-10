@@ -16,9 +16,9 @@ import userinterface.ViewFactory;
 
 /** The class containing the WithdrawTransaction for the ATM application */
 //==============================================================
-public class InsertScoutTransaction extends Transaction
+public class InsertTreeTypeTransaction extends Transaction
 {
-    private Scout myScout; // needed for GUI only
+    private TreeType myTreeType;
 
     // GUI Components
 
@@ -30,7 +30,7 @@ public class InsertScoutTransaction extends Transaction
      *
      */
     //----------------------------------------------------------
-    public InsertScoutTransaction()
+    public InsertTreeTypeTransaction()
             throws Exception
     {
         super();
@@ -40,7 +40,7 @@ public class InsertScoutTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("ScoutData", "UpdateStatusMessage");
+        dependencies.setProperty("TreeTypeData", "TransactionError");
         dependencies.setProperty("OK", "CancelTransaction");
 
         myRegistry.setDependencies(dependencies);
@@ -52,21 +52,20 @@ public class InsertScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-        String sentTroopId = props.getProperty("troopId");
+        String sentBPfix = props.getProperty("barcodePrefix");
         try
         {
-            Scout s = new Scout(sentTroopId);
-            transactionErrorMessage = "ERROR: Scout with troop Id: " + sentTroopId + " already exists";
+            TreeType oldtreeType = new TreeType(sentBPfix);
+            transactionErrorMessage = "ERROR: Tree type with barcode prefix: " + sentBPfix + " already exists";
         }
         catch (Exception ex)
         {
-            myScout = new Scout(props);
-            myScout.update();
-            transactionErrorMessage = (String)myScout.getState("UpdateStatusMessage");
+            myTreeType = new TreeType(props);
+            myTreeType.update();
+            transactionErrorMessage = (String)myTreeType.getState("UpdateStatusMessage");
 
         }
     }
-
 
     //-----------------------------------------------------------
     public Object getState(String key)
@@ -75,6 +74,8 @@ public class InsertScoutTransaction extends Transaction
         {
             return transactionErrorMessage;
         }
+
+
         return null;
     }
 
@@ -86,7 +87,7 @@ public class InsertScoutTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("ScoutData") == true)
+        if (key.equals("TreeTypeData") == true)
         {
             processTransaction((Properties)value);
         }
@@ -101,14 +102,14 @@ public class InsertScoutTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("InsertScoutView");
+        Scene currentScene = myViews.get("InsertTreeTypeView");
 
         if (currentScene == null)
         {
             // create our new view
-            View newView = ViewFactory.createView("InsertScoutView", this);
+            View newView = ViewFactory.createView("InsertTreeTypeView", this);
             currentScene = new Scene(newView);
-            myViews.put("InsertScoutView", currentScene);
+            myViews.put("InsertTreeTypeView", currentScene);
 
             return currentScene;
         }

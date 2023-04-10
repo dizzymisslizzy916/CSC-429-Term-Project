@@ -96,7 +96,6 @@ public class SearchScoutView extends View{
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                System.out.println("ABC");
                 myModel.stateChangeRequest("ScoutNameEntered", firstNameInput.getText());
             }
         });

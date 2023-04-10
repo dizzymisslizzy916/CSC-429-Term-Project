@@ -16,9 +16,9 @@ import userinterface.ViewFactory;
 
 /** The class containing the WithdrawTransaction for the ATM application */
 //==============================================================
-public class InsertScoutTransaction extends Transaction
+public class InsertTreeTransaction extends Transaction
 {
-    private Scout myScout; // needed for GUI only
+    private Tree myTree; // needed for GUI only
 
     // GUI Components
 
@@ -30,7 +30,7 @@ public class InsertScoutTransaction extends Transaction
      *
      */
     //----------------------------------------------------------
-    public InsertScoutTransaction()
+    public InsertTreeTransaction()
             throws Exception
     {
         super();
@@ -40,7 +40,7 @@ public class InsertScoutTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("ScoutData", "UpdateStatusMessage");
+        dependencies.setProperty("TreeData", "TransactionError");
         dependencies.setProperty("OK", "CancelTransaction");
 
         myRegistry.setDependencies(dependencies);
@@ -52,21 +52,31 @@ public class InsertScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-        String sentTroopId = props.getProperty("troopId");
-        try
-        {
-            Scout s = new Scout(sentTroopId);
-            transactionErrorMessage = "ERROR: Scout with troop Id: " + sentTroopId + " already exists";
+        String barcodeVal = props.getProperty("barCode");
+        String barcodePrefix = barcodeVal.substring(0,2);
+        try {
+            TreeType tt = new TreeType(barcodePrefix);
+            String treeTypeId = (String)tt.getState("treeTypeId");
+            props.setProperty("treeType", treeTypeId);
+            try {
+                Tree t = new Tree(barcodeVal);
+                transactionErrorMessage = "ERROR: Tree with barcode: " + barcodeVal + " already exists!";
+            }
+            catch (InvalidPrimaryKeyException except)
+            {
+                myTree = new Tree(props);
+                myTree.setOldFlag(false);
+                myTree.update();
+                transactionErrorMessage = (String)myTree.getState("UpdateStatusMessage");
+            }
         }
-        catch (Exception ex)
+        catch (InvalidPrimaryKeyException excep)
         {
-            myScout = new Scout(props);
-            myScout.update();
-            transactionErrorMessage = (String)myScout.getState("UpdateStatusMessage");
+            System.out.println(excep);
+            transactionErrorMessage = "ERROR: Invalid barcode - no associated tree type found!";
+        }
 
-        }
     }
-
 
     //-----------------------------------------------------------
     public Object getState(String key)
@@ -75,6 +85,7 @@ public class InsertScoutTransaction extends Transaction
         {
             return transactionErrorMessage;
         }
+
         return null;
     }
 
@@ -86,7 +97,7 @@ public class InsertScoutTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("ScoutData") == true)
+        if (key.equals("TreeData") == true)
         {
             processTransaction((Properties)value);
         }
@@ -101,14 +112,14 @@ public class InsertScoutTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("InsertScoutView");
+        Scene currentScene = myViews.get("InsertTreeView");
 
         if (currentScene == null)
         {
             // create our new view
-            View newView = ViewFactory.createView("InsertScoutView", this);
+            View newView = ViewFactory.createView("InsertTreeView", this);
             currentScene = new Scene(newView);
-            myViews.put("InsertScoutView", currentScene);
+            myViews.put("InsertTreeView", currentScene);
 
             return currentScene;
         }

@@ -45,11 +45,11 @@ import impresario.IModel;
 
 public class LibrarianView extends View {
     private Button insertNewScoutButton;
-    private Button searchScoutsButton;
-    private Button insertNewBookButton;
+    private Button insertNewTreeButton;
+    private Button insertNewTreeTypeButton;
+
     private Button insertNewPatronButton;
-    private Button searchBooksButton;
-    private Button searchPatronsButton;
+    private Button searchScoutsButton;
     private Button doneButton;
     protected MessageView statusLog;
 
@@ -101,32 +101,32 @@ public class LibrarianView extends View {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        insertNewBookButton = new Button("Register A Scout");
-        insertNewBookButton.setOnAction ((ActionEvent e) -> {
+        insertNewScoutButton = new Button("Register A Scout");
+        insertNewScoutButton.setOnAction ((ActionEvent e) -> {
             myModel.stateChangeRequest("InsertScout", null);
 
         });
-        grid.add(insertNewBookButton, 0, 0);
+        grid.add(insertNewScoutButton, 0, 0);
 
-        insertNewPatronButton = new Button("Insert A Patron");
-        insertNewPatronButton.setOnAction ((ActionEvent e) -> {
+        insertNewTreeButton = new Button("Add A Tree");
+        insertNewTreeButton.setOnAction ((ActionEvent e) -> {
 
-            myModel.stateChangeRequest("InsertPatron", null);
-
-        });
-        grid.add(insertNewPatronButton, 1, 0);
-
-        searchBooksButton = new Button("Search Books");
-        searchBooksButton.setOnAction ((ActionEvent e) -> {
-
-            myModel.stateChangeRequest("SearchBook", null);
+            myModel.stateChangeRequest("InsertTree", null);
 
         });
-        grid.add(searchBooksButton, 2, 0);
+        grid.add(insertNewTreeButton, 1, 0);
 
-        searchScoutsButton = new Button("Search A Scout");
+        insertNewTreeTypeButton = new Button("Add A Tree Type");
+        insertNewTreeTypeButton.setOnAction ((ActionEvent e) -> {
+
+            myModel.stateChangeRequest("InsertTreeType", null);
+
+        });
+        grid.add(insertNewTreeTypeButton, 2, 0);
+
+        searchScoutsButton = new Button("Update A Scout");
         searchScoutsButton.setOnAction ((ActionEvent e) -> {
-            myModel.stateChangeRequest("SearchScout", null);
+            myModel.stateChangeRequest("UpdateScout", null);
 
         });
         grid.add(searchScoutsButton, 3, 0);

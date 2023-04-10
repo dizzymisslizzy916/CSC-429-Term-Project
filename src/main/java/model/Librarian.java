@@ -100,12 +100,21 @@ public class Librarian implements IView, IModel
 
         else if (key.equals("InsertScout") == true)
         {
-            System.out.println(key);
-            String transType = key;
-//            doTransaction(transType);
-            createAndShowScoutView();
+              doTransaction(key);
 
         }
+
+        else if (key.equals("InsertTree") == true)
+        {
+            doTransaction(key);
+
+        }
+
+        else if (key.equals("InsertTreeType") == true)
+        {
+            doTransaction(key);
+        }
+
 
         else if (key.equals("SearchScout") == true)
         {
@@ -113,43 +122,11 @@ public class Librarian implements IView, IModel
             String transType = key;
             doTransaction(transType);
 
-            //createAndShowPatronSearchView();
+        }
+        else if (key.equals("UpdateScout") == true) {
+            doTransaction(key);
         }
 
-        else if (key.equals("InsertPatron") == true)
-        {
-            System.out.println(key);
-            String transType = key;
-//            doTransaction(transType);
-
-            createAndShowPatronView();
-        }
-        else if (key.equals("InsertBook") == true)
-        {
-            System.out.println(key);
-            String transType = key;
-//            doTransaction(transType);
-
-            createAndShowBookView();
-        }
-
-        else if (key.equals("SearchBook") == true)
-        {
-            System.out.println(key);
-            String transType = key;
-            doTransaction(transType);
-
-            //createAndShowBookSearchView();
-        }
-
-        else if (key.equals("SearchPatron") == true)
-        {
-            System.out.println(key);
-            String transType = key;
-            doTransaction(transType);
-
-            //createAndShowPatronSearchView();
-        }
 
 
         myRegistry.updateSubscribers(key, this);
@@ -197,86 +174,6 @@ public class Librarian implements IView, IModel
             View newView = ViewFactory.createView("LibrarianView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
             myViews.put("LibrarianView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowScoutView()
-    {
-        Scene currentScene = (Scene)myViews.get("InsertScoutView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("InsertScoutView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("InsertScoutView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowPatronView()
-    {
-        Scene currentScene = (Scene)myViews.get("InsertPatronView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("InsertPatronView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("InsertPatronView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowBookView()
-    {
-        Scene currentScene = (Scene)myViews.get("InsertBookView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("InsertBookView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("InsertBookView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowBookSearchView()
-    {
-        Scene currentScene = (Scene)myViews.get("SearchBookView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("SearchBookView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("SearchBookView", currentScene);
-        }
-
-        swapToView(currentScene);
-
-    }
-
-    private void createAndShowPatronSearchView()
-    {
-        Scene currentScene = (Scene)myViews.get("SearchPatronView");
-
-        if (currentScene == null)
-        {
-            // create our initial view
-            View newView = ViewFactory.createView("SearchPatronView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("SearchPatronView", currentScene);
         }
 
         swapToView(currentScene);

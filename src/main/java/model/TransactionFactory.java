@@ -2,11 +2,7 @@
 package model;
 
 // system imports
-import userinterface.InsertPatronView;
 
-
-import java.util.Vector;
-import javax.swing.JFrame;
 
 // project imports
 
@@ -23,29 +19,24 @@ public class TransactionFactory
 	{
 		Transaction retValue = null;
 
-		if (transType.equals("InsertPatron") == true)
+		if (transType.equals("InsertScout") == true)
 		{
-			retValue = new InsertPatronTransaction();
+			retValue = new InsertScoutTransaction();
 		}
-		else if (transType.equals("InsertScout") == true)
+		else if (transType.equals("InsertTree") == true)
 		{
-			retValue = new InsertBookTransaction();
+			retValue = new InsertTreeTransaction();
+		}
+		else if (transType.equals("InsertTreeType") == true)
+		{
+			retValue = new InsertTreeTypeTransaction();
 		}
 		else if (transType.equals("SearchScout") == true)
 		{
 			retValue = new SearchScoutTransaction();
 		}
-		else if (transType.equals("InsertBook") == true)
-		{
-			retValue = new InsertBookTransaction();
-		}
-		else if (transType.equals("SearchBook") == true)
-		{
-			retValue = new SearchBookTransaction();
-		}
-		else if (transType.equals("SearchPatron") == true)
-		{
-			retValue = new SearchPatronTransaction();
+		else if (transType.equals("UpdateScout") == true) {
+			retValue = new UpdateScoutTransaction();
 		}
 
 
