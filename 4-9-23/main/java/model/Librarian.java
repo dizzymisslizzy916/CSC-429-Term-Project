@@ -7,8 +7,6 @@ import java.util.Properties;
 import javafx.stage.Stage;
 
 
-import exception.InvalidPrimaryKeyException;
-import exception.PasswordMismatchException;
 import event.Event;
 import userinterface.MainStageContainer;
 import userinterface.View;
@@ -100,19 +98,19 @@ public class Librarian implements IView, IModel
 
         else if (key.equals("InsertScout") == true)
         {
-            doTransaction(key);
+            doTransaction(key, value);
 
         }
 
         else if (key.equals("InsertTree") == true)
         {
-            doTransaction(key);
+            doTransaction(key, value);
 
         }
 
         else if (key.equals("InsertTreeType") == true)
         {
-            doTransaction(key);
+            doTransaction(key, value);
         }
 
 
@@ -120,15 +118,18 @@ public class Librarian implements IView, IModel
         {
             System.out.println(key);
             String transType = key;
-            doTransaction(transType);
+            doTransaction(transType, value);
 
         }
         else if (key.equals("UpdateTree") == true)
         {
             System.out.println(key);
             String transType = key;
-            doTransaction(transType);
+            doTransaction(transType, value);
 
+        }
+        else if (key.equals("DeleteTree")) {
+            doTransaction(key, value);
         }
 
 
@@ -151,13 +152,13 @@ public class Librarian implements IView, IModel
      * create.
      */
     //----------------------------------------------------------
-    public void doTransaction(String transactionType) {
+    public void doTransaction(String transactionType, Object value) {
         try {
             Transaction trans = TransactionFactory.createTransaction(
                     transactionType);
 
             trans.subscribe("CancelTransaction", this);
-            trans.stateChangeRequest("DoYourJob", "");
+            trans.stateChangeRequest("DoYourJob", value);
         } catch (Exception ex) {
             transactionErrorMessage = "FATAL ERROR: TRANSACTION FAILURE: Unrecognized transaction!!";
             new Event(Event.getLeafLevelClassName(this), "createTransaction",
