@@ -30,16 +30,15 @@ public class TreeTypeBarCodeEntryView extends View
 {
 
     protected TextField treeTypeBarCode;
-
     protected Button submitButton;
     protected Button doneButton;
 
     // For showing error message
     protected MessageView statusLog;
 
-    public TreeTypeBarCodeEntryView(IModel tree) //constructor
+    public TreeTypeBarCodeEntryView(IModel treeType) //constructor
     {
-        super(tree, "TreeTypeBarCodeEntryView");
+        super(treeType, "TreeTypeBarCodeEntryView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -60,14 +59,12 @@ public class TreeTypeBarCodeEntryView extends View
         myModel.subscribe("UpdateStatusMessage", this);
     }
 
-    // Create the title container
-    //-------------------------------------------------------------
     private Node createTitle()
     {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Update A TreeType ");
+        Text titleText = new Text(" Find Your Tree Type ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -78,8 +75,6 @@ public class TreeTypeBarCodeEntryView extends View
         return container;
     }
 
-    // Create the main form content
-    //-------------------------------------------------------------
     private VBox createFormContent()
     {
         VBox vbox = new VBox(10);
@@ -96,7 +91,7 @@ public class TreeTypeBarCodeEntryView extends View
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        Text label = new Text(" TreeType Bar Code : ");
+        Text label = new Text(" Tree Type Bar Code Prefix: ");
         Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
         label.setFont(myFont);
         label.setWrappingWidth(150);
@@ -104,15 +99,19 @@ public class TreeTypeBarCodeEntryView extends View
         grid.add(label, 0, 1);
 
         treeTypeBarCode = new TextField();
+        treeTypeBarCode.setEditable(true);
+        treeTypeBarCode.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                System.out.println("ABC");
+                myModel.stateChangeRequest("TreeTypeBarCodePrefixEntered", treeTypeBarCode.getText());
+            }
+        });
         grid.add(treeTypeBarCode, 1, 1);
 
-
-        //Submit and Done button
-
-        HBox doneCont = new HBox(10);
-        doneCont.setAlignment(Pos.CENTER);
-
-        submitButton = new Button("Submit");
+        submitButton = new Button("Find Tree Type");
         submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -120,43 +119,14 @@ public class TreeTypeBarCodeEntryView extends View
             public void handle(ActionEvent e) {
                 clearErrorMessage();
 
-                //Todo: process search function
-
-
-                Properties props = new Properties();
-                String barcodePrefixInput = treeTypeBarCode.getText();
-
-
-
-
-
-                //Check the barcode prefix
-
-                if ((barcodePrefixInput == null) || (barcodePrefixInput.length() == 0)) {
-                    displayErrorMessage("Error: Please enter a valid BarCode Prefix");
-                    return;
-                }
-                else if (barcodePrefixInput.length() != 2) {
-                    displayErrorMessage("ERROR: Please enter a 2-digit barcode prefix");
-                    return;
-                }
-                else {
-                    try {
-                        Long.parseLong(barcodePrefixInput);
-                    }
-                    catch (Exception ex)
-                    {
-                        displayErrorMessage("ERROR: BarCode Prefix must have only digits");
-                        return;
-                    }
-                }
-                props.setProperty("barcodePrefix",barcodePrefixInput);
-
-                myModel.stateChangeRequest("TreeTypeData", props);
-
-
+                String barcode = treeTypeBarCode.getText();
+                //Scout temp = new Scout(props);
+                // temp.update();
+                // displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
+                myModel.stateChangeRequest("TreeTypeBarCodePrefixEntered", barcode);
             }
         });
+        HBox doneCont = new HBox();
         doneCont.getChildren().add(submitButton);
 
         doneButton = new Button("Back");
@@ -177,8 +147,6 @@ public class TreeTypeBarCodeEntryView extends View
         return vbox;
     }
 
-    // Create the status log field
-    //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
     {
         statusLog = new MessageView(initialMessage);
@@ -186,16 +154,11 @@ public class TreeTypeBarCodeEntryView extends View
         return statusLog;
     }
 
-    //-------------------------------------------------------------
     public void populateFields()
     {
 
     }
 
-    /**
-     * Update method
-     */
-    //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
 

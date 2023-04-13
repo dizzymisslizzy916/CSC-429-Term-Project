@@ -59,14 +59,14 @@ public class TreeBarCodeEntryView extends View
         myModel.subscribe("UpdateStatusMessage", this);
     }
 
-        // Create the title container
+    // Create the title container
     //-------------------------------------------------------------
     private Node createTitle()
     {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Update A Tree ");
+        Text titleText = new Text(" Find Your Tree ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -77,7 +77,7 @@ public class TreeBarCodeEntryView extends View
         return container;
     }
 
-        // Create the main form content
+    // Create the main form content
     //-------------------------------------------------------------
     private VBox createFormContent()
     {
@@ -103,15 +103,25 @@ public class TreeBarCodeEntryView extends View
         grid.add(label, 0, 1);
 
         treebarCode = new TextField();
+        treebarCode.setEditable(true);
+        treebarCode.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                System.out.println("ABC");
+                myModel.stateChangeRequest("TreeBarcodeEntered", treebarCode.getText());
+            }
+        });
         grid.add(treebarCode, 1, 1);
 
-        
+
         //Submit and Done button
 
         HBox doneCont = new HBox(10);
         doneCont.setAlignment(Pos.CENTER);
 
-        submitButton = new Button("Submit");
+        submitButton = new Button("Find Tree");
         submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -121,14 +131,35 @@ public class TreeBarCodeEntryView extends View
 
                 //Todo: process search function
 
+                String barcode = treebarCode.getText();
                 //Scout temp = new Scout(props);
-               // temp.update();
-               // displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
-              // myModel.stateChangeRequest("CancelTransaction", null);
+                // temp.update();
+                // displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
+                myModel.stateChangeRequest("TreeBarcodeEntered", barcode);
             }
         });
         doneCont.getChildren().add(submitButton);
 
+		/*
+        removeButton = new Button("Remove");
+        removeButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        removeButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+                //Todo: process remove function
+
+                String barcode = treebarCode.getText();
+                //Scout temp = new Scout(props);
+                // temp.update();
+                // displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
+                myModel.stateChangeRequest("DeleteTree", barcode);
+            }
+        });
+        doneCont.getChildren().add(removeButton);
+*/
         doneButton = new Button("Back");
         doneButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         doneButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -147,7 +178,7 @@ public class TreeBarCodeEntryView extends View
         return vbox;
     }
 
-        // Create the status log field
+    // Create the status log field
     //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
     {

@@ -33,7 +33,7 @@ import model.*;
 
 /** The class containing the Account View  for the ATM application */
 //==============================================================
-public class InsertScoutView extends View
+public class UpdateScoutView extends View
 {
 
     // GUI components
@@ -56,9 +56,9 @@ public class InsertScoutView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public InsertScoutView(IModel scout)
+    public UpdateScoutView(IModel scout)
     {
-        super(scout, "InsertScoutView");
+        super(scout, "UpdateScoutView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -71,12 +71,15 @@ public class InsertScoutView extends View
         container.getChildren().add(createFormContent());
 
         container.getChildren().add(createStatusLog("             "));
+        container.getChildren().add(new Text("                          "));
+        container.getChildren().add(new Text("                          "));
+
 
         getChildren().add(container);
 
         populateFields();
 
-        myModel.subscribe("UpdateStatusMessage", this);
+        myModel.subscribe("ScoutUpdateMessage", this);
     }
 
 
@@ -87,7 +90,7 @@ public class InsertScoutView extends View
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Register A Scout ");
+        Text titleText = new Text(" Update A Scout ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -180,14 +183,38 @@ public class InsertScoutView extends View
         grid.add(email, 1, 6);
 
         //Scout troopId
-        Text scoutTroopId = new Text(" Troop ID : ");
-        scoutTroopId.setFont(myFont);
-        scoutTroopId.setWrappingWidth(150);
-        scoutTroopId.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(scoutTroopId, 0, 7);
+//        Text scoutTroopId = new Text(" Troop ID : ");
+//        scoutTroopId.setFont(myFont);
+//        scoutTroopId.setWrappingWidth(150);
+//        scoutTroopId.setTextAlignment(TextAlignment.RIGHT);
+//        grid.add(scoutTroopId, 0, 7);
+//
+//        troopId = new TextField();
+//        grid.add(troopId, 1, 7);
+
+        //Scout troopId
+      /*  Text scoutDateStatusUpdated = new Text(" Date Status Updated : ");
+        scoutDateStatusUpdated.setFont(myFont);
+        scoutDateStatusUpdated.setWrappingWidth(150);
+        scoutDateStatusUpdated.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(scoutDateStatusUpdated, 0, 7);
 
         troopId = new TextField();
-        grid.add(troopId, 1, 7);
+
+
+        grid.add(troopId, 1, 7);*/
+
+        Text scoutStatus = new Text("Status : ");
+        scoutStatus.setFont(myFont);
+        scoutStatus.setWrappingWidth(150);
+        scoutStatus.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(scoutStatus,0, 7);
+
+        String statusGiven[] = {"Active", "Inactive"};
+        status = new ComboBox(FXCollections
+                .observableArrayList(statusGiven));
+        status.setValue("Active");
+        grid.add(status,1, 7);
 
         //Submit and Done button
 
@@ -204,12 +231,12 @@ public class InsertScoutView extends View
 
                 Properties props = new Properties();
                 String lastNameInput = lastName.getText();
-                String firstNameInput = firstName.getText();
+                               String firstNameInput = firstName.getText();
                 String middleNameInput = middleName.getText();
                 String dateOfBirthInput = dateOfBirth.getText();
                 String phoneNumberInput = phoneNumber.getText();
                 String emailInput = email.getText();
-                String troopIdInput = troopId.getText();
+//                String troopIdInput = troopId.getText();
 
                 //Email must contain @
                 if((emailInput == null) || (emailInput.length() == 0)) {
@@ -221,25 +248,6 @@ public class InsertScoutView extends View
                     return;
                 }
 
-                //TroopId is 5 digit
-                if ((troopIdInput == null) || (troopIdInput.length() == 0)) {
-                    displayErrorMessage("Error: Please enter a valid troopId");
-                    return;
-                }
-                else if (troopIdInput.length() != 5) {
-                    displayErrorMessage("ERROR: Please enter a 5-digit troopId");
-                    return;
-                }
-                else {
-                    try {
-                        Long.parseLong(troopIdInput);
-                    }
-                    catch (Exception ex)
-                    {
-                        displayErrorMessage("ERROR: TroopId must have only digits");
-                        return;
-                    }
-                }
 
                 //Check Date of Birth
                 if (!dateOfBirthInput.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -254,20 +262,19 @@ public class InsertScoutView extends View
                     return;
                 }
                 else if (phoneNumberInput.length() != 10) {
-                        displayErrorMessage("ERROR: Please enter a 10-digit phone number");
-                        return;
+                    displayErrorMessage("ERROR: Please enter a 10-digit phone number");
+                    return;
                 }
                 else {
-                        try {
-                            Long.parseLong(phoneNumberInput);
-                        }
-                        catch (Exception ex)
-                        {
-                            displayErrorMessage("ERROR: Phone number must have only digits");
-                            return;
-                        }
-
+                    try {
+                        Long.parseLong(phoneNumberInput);
                     }
+                    catch (Exception ex)
+                    {
+                        displayErrorMessage("ERROR: Phone number must have only digits");
+                        return;
+                    }
+                }
 
                 props.setProperty("lastName",lastNameInput);
                 props.setProperty("firstName",firstNameInput);
@@ -275,9 +282,10 @@ public class InsertScoutView extends View
                 props.setProperty("dateOfBirth",dateOfBirthInput);
                 props.setProperty("phoneNumber",phoneNumberInput);
                 props.setProperty("email",emailInput);
-                props.setProperty("troopId",troopIdInput);
 
-                myModel.stateChangeRequest("ScoutData", props);
+                clearErrorMessage();
+
+                myModel.stateChangeRequest("UpdateScout", props);
 
             }
         });
@@ -316,6 +324,18 @@ public class InsertScoutView extends View
     //-------------------------------------------------------------
     public void populateFields()
     {
+        String currentLastName = (String)((IModel)myModel.getState("SelectedScout")).getState("lastName");
+        lastName.setText(currentLastName);
+        String currentFirstName = (String)((IModel)myModel.getState("SelectedScout")).getState("firstName");
+        firstName.setText(currentFirstName);
+        String currentMiddleName = (String)((IModel)myModel.getState("SelectedScout")).getState("middleName");
+        middleName.setText(currentMiddleName);
+        String currentDateOfBirth = (String)((IModel)myModel.getState("SelectedScout")).getState("dateOfBirth");
+        dateOfBirth.setText(currentDateOfBirth);
+        String currentPhoneNumber = (String)((IModel)myModel.getState("SelectedScout")).getState("phoneNumber");
+        phoneNumber.setText(currentPhoneNumber);
+        String currentEmail = (String)((IModel)myModel.getState("SelectedScout")).getState("email");
+        email.setText(currentEmail);
 
     }
 
@@ -326,7 +346,7 @@ public class InsertScoutView extends View
     public void updateState(String key, Object value)
     {
 
-        if (key.equals("TransactionError") == true)
+        if (key.equals("ScoutUpdateMessage") == true)
         {
             String val = (String)value;
             if ((val.startsWith("Err")) || (val.startsWith("ERR"))) {
@@ -370,5 +390,4 @@ public class InsertScoutView extends View
 //---------------------------------------------------------------
 //	Revision History:
 //
-
 

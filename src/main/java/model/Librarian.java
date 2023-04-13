@@ -100,7 +100,7 @@ public class Librarian implements IView, IModel
 
         else if (key.equals("InsertScout") == true)
         {
-            doTransaction(key);
+              doTransaction(key);
 
         }
 
@@ -122,6 +122,9 @@ public class Librarian implements IView, IModel
             String transType = key;
             doTransaction(transType);
 
+        }
+        else if (key.equals("UpdateScout") == true) {
+            doTransaction(key);
         }
         else if (key.equals("UpdateTree") == true)
         {

@@ -19,7 +19,6 @@ import userinterface.ViewFactory;
 public class InsertTreeTransaction extends Transaction
 {
     private Tree myTree; // needed for GUI only
-    private TreeType tt;
 
     // GUI Components
 

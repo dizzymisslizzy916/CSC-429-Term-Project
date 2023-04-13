@@ -1,5 +1,5 @@
 // specify the package
-package model;
+        package model;
 
 // system imports
 import java.sql.SQLException;
@@ -30,6 +30,10 @@ public class TreeType extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
+    public TreeType()
+    {
+        super(myTableName);
+    }
     public TreeType(String bf)
             throws InvalidPrimaryKeyException
     {
@@ -102,6 +106,52 @@ public class TreeType extends EntityBase implements IView
         }
     }
 
+    public void findWithTreeTypeId(String ttId) throws InvalidPrimaryKeyException {
+        setDependencies();
+        String query = "SELECT * FROM " + myTableName + " WHERE (treeTypeId = " + ttId + ")";
+
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        // You must get one account at least
+        if (allDataRetrieved != null)
+        {
+            int size = allDataRetrieved.size();
+
+            // There should be EXACTLY one account. More than that is an error
+            if (size != 1)
+            {
+                throw new InvalidPrimaryKeyException("Multiple Tree Type matching id: "
+                        + ttId + " found.");
+            }
+            else
+            {
+                // copy all the retrieved data into persistent state
+                Properties retrievedAccountData = allDataRetrieved.elementAt(0);
+                persistentState = new Properties();
+
+                Enumeration allKeys = retrievedAccountData.propertyNames();
+                while (allKeys.hasMoreElements() == true)
+                {
+                    String nextKey = (String)allKeys.nextElement();
+                    String nextValue = retrievedAccountData.getProperty(nextKey);
+                    // Id = Integer.parseInt(retrievedAccountData.getProperty("Id"));
+
+                    if (nextValue != null)
+                    {
+                        persistentState.setProperty(nextKey, nextValue);
+                    }
+                }
+
+            }
+        }
+        // If no account found for this user name, throw an exception
+        else
+        {
+            throw new InvalidPrimaryKeyException("No Tree Type matching id : "
+                    + ttId + " found.");
+        }
+    }
+
     //-----------------------------------------------------------------------------------
     private void setDependencies()
     {
@@ -122,7 +172,7 @@ public class TreeType extends EntityBase implements IView
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-
+        persistentState.setProperty(key, (String)value);
         myRegistry.updateSubscribers(key, this);
     }
 
@@ -157,7 +207,7 @@ public class TreeType extends EntityBase implements IView
                 Integer treetypeId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("treeTypeId", "" + treetypeId);
-                updateStatusMessage = "New Tree Type: #" +  persistentState.getProperty("treeTypeId")
+                updateStatusMessage = "Id for new Tree Type: " +  persistentState.getProperty("treeTypeId")
                         + " installed successfully in database!";
             }
         }
@@ -206,5 +256,9 @@ public class TreeType extends EntityBase implements IView
             mySchema = getSchemaInfo(tableName);
         }
     }
+
+
 }
+
+
 

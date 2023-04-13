@@ -47,11 +47,10 @@ public class LibrarianView extends View {
     private Button insertNewScoutButton;
     private Button insertNewTreeButton;
     private Button insertNewTreeTypeButton;
-    private Button updateTreeButton;
-    private Button insertNewPatronButton;
-
-    private Button updateTreeTypeButton;
     private Button searchScoutsButton;
+    private Button updateTreeButton;
+    private Button updateTreeTypeButton;
+    private Button removeScoutButton;
     private Button doneButton;
     protected MessageView statusLog;
 
@@ -126,9 +125,9 @@ public class LibrarianView extends View {
         });
         grid.add(insertNewTreeTypeButton, 2, 0);
 
-        searchScoutsButton = new Button("Search A Scout");
+        searchScoutsButton = new Button("Update A Scout");
         searchScoutsButton.setOnAction ((ActionEvent e) -> {
-            myModel.stateChangeRequest("SearchScout", null);
+            myModel.stateChangeRequest("UpdateScout", null);
 
         });
         grid.add(searchScoutsButton, 3, 0);
@@ -140,12 +139,19 @@ public class LibrarianView extends View {
         });
         grid.add(updateTreeButton, 0, 1);
 
-        updateTreeTypeButton = new Button("Update A TreeType");
+        updateTreeTypeButton = new Button("Update A Tree Type");
         updateTreeTypeButton.setOnAction ((ActionEvent e) -> {
             myModel.stateChangeRequest("UpdateTreeType", null);
 
         });
-        grid.add(updateTreeTypeButton, 0, 2);
+        grid.add(updateTreeTypeButton, 1, 1);
+
+        removeScoutButton = new Button("Remove A Scout");
+        removeScoutButton.setOnAction ((ActionEvent e) -> {
+            myModel.stateChangeRequest("DeleteScout", null);
+
+        });
+        grid.add(removeScoutButton, 2, 1);
 
         doneButton = new Button("Done");
         doneButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -207,10 +213,10 @@ public class LibrarianView extends View {
         clearErrorMessage();
     }
 
-    //----------------------------------------------------------
+        //----------------------------------------------------------
 
 
-    //---------------------------------------------------------
+        //---------------------------------------------------------
     public void updateState(String key, Object value) //how to update state without login info or error message?
     {
         // STEP 6: Be sure to finish the end of the 'perturbation'
@@ -221,5 +227,4 @@ public class LibrarianView extends View {
         }
     }
 
-}
-
+    }

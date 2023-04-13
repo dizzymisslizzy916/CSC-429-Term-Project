@@ -58,7 +58,7 @@ public class SearchScoutView extends View{
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" TROOP 209 TREE SALES SYSTEM ");
+        Text titleText = new Text(" Find A Scout ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -96,7 +96,6 @@ public class SearchScoutView extends View{
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                System.out.println("ABC");
                 myModel.stateChangeRequest("ScoutNameEntered", firstNameInput.getText());
             }
         });
@@ -113,10 +112,10 @@ public class SearchScoutView extends View{
             public void handle(ActionEvent e) {
                 //System.out.println("Anh and Liz get here -- annoying -- 1");
                 clearErrorMessage();
-                String title = firstNameInput.getText();
+                String nameValue = firstNameInput.getText();
                 // DEBUG
                 // System.out.println("Anh and Liz get here -- annoying -- 2");
-                myModel.stateChangeRequest("ScoutSearch",title);
+                myModel.stateChangeRequest("ScoutSearch",nameValue);
 
 
             }
@@ -130,7 +129,7 @@ public class SearchScoutView extends View{
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelSearchScouts", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
         doneCont.getChildren().add(cancelButton);

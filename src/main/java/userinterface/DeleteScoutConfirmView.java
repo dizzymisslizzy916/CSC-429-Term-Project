@@ -19,21 +19,24 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.collections.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 // project imports
 import impresario.IModel;
 import model.*;
+//import java.util.SimpleDateFormat;
 
 /** The class containing the Account View  for the ATM application */
 //==============================================================
-public class UpdateTreeTypeView extends View
+public class DeleteScoutConfirmView extends View
 {
 
     // GUI components
-    protected TextField typeDescription;
-    protected TextField cost;
-    protected TextField barcodePrefix;
 
     protected Button submitButton;
     protected Button doneButton;
@@ -43,9 +46,9 @@ public class UpdateTreeTypeView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public UpdateTreeTypeView(IModel treeType)
+    public DeleteScoutConfirmView(IModel scout)
     {
-        super(treeType, "UpdateTreeTypeView");
+        super(scout, "DeleteScoutView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -61,9 +64,9 @@ public class UpdateTreeTypeView extends View
 
         getChildren().add(container);
 
-        populateFields();
+        //populateFields();
 
-        myModel.subscribe("TransactionError", this);
+        myModel.subscribe("ScoutDeleteStatusMessage", this);
     }
 
 
@@ -74,7 +77,7 @@ public class UpdateTreeTypeView extends View
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Update A Tree Type ");
+        Text titleText = new Text(" Confirm Delete A Scout ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -89,7 +92,7 @@ public class UpdateTreeTypeView extends View
     //-------------------------------------------------------------
     private VBox createFormContent()
     {
-        VBox vbox = new VBox(10);
+        VBox vbox = new VBox(50);
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -103,38 +106,7 @@ public class UpdateTreeTypeView extends View
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        //Tree Type Description
-        Text treeTypeDescription = new Text(" Type Description : ");
-        Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
-        treeTypeDescription.setFont(myFont);
-        treeTypeDescription.setWrappingWidth(150);
-        treeTypeDescription.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeTypeDescription, 0, 1);
-
-        typeDescription = new TextField();
-        grid.add(typeDescription, 1, 1);
-
-        //Tree Type Cost
-        Text treeTypeCost = new Text(" Cost : ");
-        treeTypeCost.setFont(myFont);
-        treeTypeCost.setWrappingWidth(150);
-        treeTypeCost.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeTypeCost, 0, 2);
-
-        cost = new TextField();
-        grid.add(cost, 1, 2);
-
-        //Tree Type Barcode
-        /*Text treeTypeBarCode = new Text(" Bar Code Prefix : ");
-        treeTypeBarCode.setFont(myFont);
-        treeTypeBarCode.setWrappingWidth(150);
-        treeTypeBarCode.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeTypeBarCode, 0, 3);
-
-        barcodePrefix = new TextField();
-        grid.add(barcodePrefix, 1, 3);*/
-
-
+        
         //Submit and Done button
 
         HBox doneCont = new HBox(10);
@@ -146,67 +118,13 @@ public class UpdateTreeTypeView extends View
 
             @Override
             public void handle(ActionEvent e) {
+
+
                 clearErrorMessage();
+                String statusValue = "Inactive";
 
-                Properties props = new Properties();
-                String typeDescriptionInput = typeDescription.getText();
-                String costInput = cost.getText();
-                //String barcodePrefixInput = barcodePrefix.getText();
-                //System.out.println("Received desc: " + typeDescriptionInput +
-                        //"; cost: " + costInput + "; barcode prefix: " + barcodePrefixInput);
-
-                //Check the typeDescription
-                if ((typeDescriptionInput == null) || (typeDescriptionInput.length() == 0)) {
-                    displayErrorMessage("Error: Please enter a valid Description");
-                    return;
-                }
-                else if ((typeDescriptionInput.length() > 200)) {
-                    displayErrorMessage("Maximum description length reached.");
-                }
-
-                //Check the cost
-                if ((costInput == null) || (costInput.length() == 0)) {
-                    displayErrorMessage("Error: Please enter a valid cost");
-                    return;
-                }
-                else {
-                    try {
-                        Long.parseLong(costInput);
-                    }
-                    catch (Exception ex)
-                    {
-                        displayErrorMessage("ERROR: Cost must have only digits");
-                        return;
-                    }
-                }
-
-                //Check the barcode prefix
-/*
-                if ((barcodePrefixInput == null) || (barcodePrefixInput.length() == 0)) {
-                    displayErrorMessage("Error: Please enter a valid BarCode Prefix");
-                    return;
-                }
-                else if (barcodePrefixInput.length() != 2) {
-                    displayErrorMessage("ERROR: Please enter a 2-digit barcode prefix");
-                    return;
-                }
-                else {
-                    try {
-                        Long.parseLong(barcodePrefixInput);
-                    }
-                    catch (Exception ex)
-                    {
-                        displayErrorMessage("ERROR: BarCode Prefix must have only digits");
-                        return;
-                    }
-                }*/
-
-
-                props.setProperty("typeDescription", typeDescriptionInput);
-                props.setProperty("cost", costInput);
-                //props.setProperty("barcodePrefix", barcodePrefixInput);
-
-                myModel.stateChangeRequest("TreeTypeData", props);
+                myModel.stateChangeRequest("DeleteScout",statusValue);
+		
             }
         });
         doneCont.getChildren().add(submitButton);
@@ -242,24 +160,21 @@ public class UpdateTreeTypeView extends View
     }
 
     //-------------------------------------------------------------
+  /**
     public void populateFields()
     {
-        String typeDesc = (String)myModel.getState("typeDescription");
-        System.out.println(typeDesc);
-        typeDescription.setText(typeDesc);
-        String costVal = ((String)myModel.getState("cost"));
-        System.out.println(costVal);
-        cost.setText(costVal);
+        
+
     }
 
-    /**
+  
      * Update method
      */
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
 
-        if (key.equals("TransactionError") == true)
+        if (key.equals("ScoutDeleteStatusMessage") == true)
         {
             String val = (String)value;
             if ((val.startsWith("Err")) || (val.startsWith("ERR"))) {
@@ -303,5 +218,3 @@ public class UpdateTreeTypeView extends View
 //---------------------------------------------------------------
 //	Revision History:
 //
-
-

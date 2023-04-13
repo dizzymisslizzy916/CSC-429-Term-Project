@@ -79,8 +79,9 @@ public class ScoutCollectionView extends View {
         try
         {
             ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
-
+            System.out.println("Scout collection reference: " + scoutCollection);
             Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            System.out.println("Size of scout list retrieved: " + entryList.size());
             Enumeration entries = entryList.elements();
 
             while (entries.hasMoreElements() == true)
@@ -108,7 +109,7 @@ public class ScoutCollectionView extends View {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" TROOP 209 TREE SALES SYSTEM ");
+        Text titleText = new Text(" Select A Scout ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -166,7 +167,7 @@ public class ScoutCollectionView extends View {
         TableColumn scoutEmailColumn = new TableColumn("Email") ;
         scoutEmailColumn.setMinWidth(200);
         scoutEmailColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("phoneNumber"));
+                new PropertyValueFactory<ScoutTableModel, String>("email"));
 
         TableColumn scoutTroopIdColumn = new TableColumn("Troop ID") ;
         scoutTroopIdColumn.setMinWidth(200);
@@ -181,6 +182,16 @@ public class ScoutCollectionView extends View {
         tableOfScouts.getColumns().addAll(/*scoutNumberColumn, */
                 scoutLastNameColumn, scoutFirstNameColumn, scoutMiddleNameColumn, scoutDateOfBirthColumn,
                 scoutPhoneNumberColumn, scoutEmailColumn, scoutTroopIdColumn, statusColumn);
+
+        tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
+                    processScoutSelected();
+                }
+            }
+        });
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(115, 150);
@@ -212,6 +223,17 @@ public class ScoutCollectionView extends View {
         vbox.getChildren().add(btnContainer);
 
         return vbox;
+    }
+
+    //Try to do remove function
+
+    protected void processScoutSelected()
+    {
+        System.out.println("Did you get here Anh?");
+        ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
+        String selectedTroopId = selectedItem.getTroopId();
+        System.out.println("You here Anh?");
+        myModel.stateChangeRequest("ScoutSelected", selectedTroopId);
     }
 
     public void updateState(String key, Object value)

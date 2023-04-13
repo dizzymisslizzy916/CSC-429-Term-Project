@@ -1,5 +1,3 @@
-
-
 // specify the package
 package model;
 
@@ -115,7 +113,7 @@ public class Scout extends EntityBase implements IView
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("status") == true)
+        if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
 
         return persistentState.getProperty(key);
@@ -124,7 +122,7 @@ public class Scout extends EntityBase implements IView
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-
+        persistentState.setProperty(key, (String)value);
         myRegistry.updateSubscribers(key, this);
     }
 
@@ -144,30 +142,35 @@ public class Scout extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase()
     {
+        System.out.println("Trying to save scout in db");
         try
         {
             if (persistentState.getProperty("scoutId") != null)
             {
+                System.out.println("Trying to update scout in db");
                 Properties whereClause = new Properties();
                 whereClause.setProperty("scoutId",
                         persistentState.getProperty("scoutId"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "ScoutId: " + persistentState.getProperty("scoutId") + " updated successfully in database!";
             }
+
             else
             {
+                System.out.println("Trying to insert scout in db");
                 Integer accountNumber =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("scoutId", "" + accountNumber.intValue());
                 updateStatusMessage = "ScoutId for new Scout: " +  persistentState.getProperty("scoutId")
-                        + "installed successfully in database!";
+                        + " installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
+            System.out.println(ex);
+            ex.printStackTrace();
             updateStatusMessage = "Error in installing scout data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
 
