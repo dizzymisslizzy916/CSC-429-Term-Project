@@ -130,7 +130,7 @@ public class Tree extends EntityBase implements IView
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-
+        persistentState.setProperty(key, (String)value);
         myRegistry.updateSubscribers(key, this);
     }
 
@@ -154,14 +154,17 @@ public class Tree extends EntityBase implements IView
         {
             if (oldFlag == true)
             {
+                System.out.println("Getting here - tree update");
                 Properties whereClause = new Properties();
                 whereClause.setProperty("barCode",
                         persistentState.getProperty("barCode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
+                System.out.println("Getting here - finished updating tree");
                 updateStatusMessage = "Tree with barcode: " + persistentState.getProperty("barCode") + " updated successfully in database!";
             }
             else
             {
+                System.out.println("Getting here 1");
                 insertPersistentState(mySchema, persistentState);
                 oldFlag = true;
                 updateStatusMessage = "Tree with barcode: " +  persistentState.getProperty("barCode")
@@ -170,6 +173,7 @@ public class Tree extends EntityBase implements IView
         }
         catch (SQLException ex)
         {
+            System.out.println("Getting here 2");
             System.out.println(ex);
             updateStatusMessage = "Error in installing tree data in database!";
 

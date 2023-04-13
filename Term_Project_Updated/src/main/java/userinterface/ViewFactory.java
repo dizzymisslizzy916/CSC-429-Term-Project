@@ -25,6 +25,29 @@ public class ViewFactory {
 		else if (viewName.equals("ScoutCollectionView") == true) {
 			return new ScoutCollectionView(model);
 		}
+		else if (viewName.equals("UpdateScoutView") == true) {
+			return new UpdateScoutView(model);
+		}
+		else if (viewName.equals("TreeBarCodeEntryView") == true) {
+			return new TreeBarCodeEntryView(model);
+		}
+		else if (viewName.equals("TreeTypeBarCodeEntryView") == true) {
+			return new TreeTypeBarCodeEntryView(model);
+		}
+		else if (viewName.equals("TreeCollectionView") == true) {
+			return new TreeBarCodeEntryView(model);
+		}
+		else if (viewName.equals("UpdateTreeView") == true) {
+			return new UpdateTreeView(model);
+		}
+		else if (viewName.equals("UpdateTreeTypeView") == true) {
+			return new UpdateTreeTypeView(model);
+		}
+		else if (viewName.equals("DeleteScoutView") == true) {
+			return new DeleteScoutConfirmView(model);
+		}
+
+
 
 
 

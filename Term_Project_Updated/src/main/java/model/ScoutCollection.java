@@ -132,7 +132,25 @@ public class ScoutCollection  extends EntityBase implements IView
         {
             Scout nextScout = scoutList.elementAt(cnt); //retrieve next Scout object
             String nextScoutId = (String)nextScout.getState("scoutId"); //retrieve its scout ID
-            if (scoutId.equals(scoutId) == true) //if input scout ID matches retrieved scout ID
+            if (scoutId.equals(nextScoutId) == true) //if input scout ID matches retrieved scout ID
+            {
+                retValue = nextScout; //return that scout
+                return retValue; // we should say 'break;' here
+            }
+        }
+
+        return retValue;
+    }
+
+    //----------------------------------------------------------
+    public Scout retrieveByTroopId(String troopId) //input scot ID
+    {
+        Scout retValue = null;
+        for (int cnt = 0; cnt < scoutList.size(); cnt++) //for all scouts in the collection
+        {
+            Scout nextScout = scoutList.elementAt(cnt); //retrieve next Scout object
+            String nextTroopId = (String)nextScout.getState("troopId"); //retrieve its scout ID
+            if (troopId.equals(nextTroopId) == true) //if input scout ID matches retrieved scout ID
             {
                 retValue = nextScout; //return that scout
                 return retValue; // we should say 'break;' here

@@ -123,8 +123,23 @@ public class Librarian implements IView, IModel
             doTransaction(transType);
 
         }
+        else if (key.equals("UpdateScout") == true) {
+            doTransaction(key);
+        }
+        else if (key.equals("UpdateTree") == true)
+        {
+            System.out.println(key);
+            String transType = key;
+            doTransaction(transType);
 
+        }
+        else if (key.equals("UpdateTreeType") == true)
+        {
+            System.out.println(key);
+            String transType = key;
+            doTransaction(transType);
 
+        }
 
         myRegistry.updateSubscribers(key, this);
     }

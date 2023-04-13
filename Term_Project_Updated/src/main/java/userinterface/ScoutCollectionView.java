@@ -79,8 +79,9 @@ public class ScoutCollectionView extends View {
         try
         {
             ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
-
+            System.out.println("Scout collection reference: " + scoutCollection);
             Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            System.out.println("Size of scout list retrieved: " + entryList.size());
             Enumeration entries = entryList.elements();
 
             while (entries.hasMoreElements() == true)
@@ -224,16 +225,15 @@ public class ScoutCollectionView extends View {
         return vbox;
     }
 
+    //Try to do remove function
+
     protected void processScoutSelected()
     {
+        System.out.println("Did you get here Anh?");
         ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
-
-        if(selectedItem != null)
-        {
-            String selectedScoutTroopId = selectedItem.getTroopId();
-
-            myModel.stateChangeRequest("ScoutSelected", selectedScoutTroopId);
-        }
+        String selectedTroopId = selectedItem.getTroopId();
+        System.out.println("You here Anh?");
+        myModel.stateChangeRequest("ScoutSelected", selectedTroopId);
     }
 
     public void updateState(String key, Object value)

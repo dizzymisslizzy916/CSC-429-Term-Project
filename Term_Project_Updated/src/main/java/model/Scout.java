@@ -122,7 +122,7 @@ public class Scout extends EntityBase implements IView
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-
+        persistentState.setProperty(key, (String)value);
         myRegistry.updateSubscribers(key, this);
     }
 
@@ -142,10 +142,12 @@ public class Scout extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase()
     {
+        System.out.println("Trying to save scout in db");
         try
         {
             if (persistentState.getProperty("scoutId") != null)
             {
+                System.out.println("Trying to update scout in db");
                 Properties whereClause = new Properties();
                 whereClause.setProperty("scoutId",
                         persistentState.getProperty("scoutId"));
@@ -155,6 +157,7 @@ public class Scout extends EntityBase implements IView
 
             else
             {
+                System.out.println("Trying to insert scout in db");
                 Integer accountNumber =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("scoutId", "" + accountNumber.intValue());
@@ -164,6 +167,8 @@ public class Scout extends EntityBase implements IView
         }
         catch (SQLException ex)
         {
+            System.out.println(ex);
+            ex.printStackTrace();
             updateStatusMessage = "Error in installing scout data in database!";
         }
     }

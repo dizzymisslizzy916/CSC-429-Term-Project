@@ -2,13 +2,13 @@
 package userinterface;
 
 // system imports
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,57 +18,64 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.collections.*;
+import java.util.*;
 
-/** This class contains the Scout Title Entry View for the 'Search Scouts' functionality of the Library application */
-public class SearchScoutView extends View{
+// project imports
+import impresario.IModel;
+import model.*;
 
-    // GUI components
-    protected TextField firstNameInput;
 
-    protected Button cancelButton;
+public class TreeTypeBarCodeEntryView extends View
+{
 
+    protected TextField treeTypeBarCode;
     protected Button submitButton;
+    protected Button doneButton;
 
     // For showing error message
     protected MessageView statusLog;
 
-    public SearchScoutView(impresario.IModel scout) //constructor
+    public TreeTypeBarCodeEntryView(IModel treeType) //constructor
     {
-        super(scout, "SearchScoutView");
+        super(treeType, "TreeTypeBarCodeEntryView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
 
-        // create our GUI components, add them to this panel
+        // Add a title for this panel
         container.getChildren().add(createTitle());
+
+        // create our GUI components, add them to this Container
         container.getChildren().add(createFormContent());
 
-        // Error message area
-        container.getChildren().add(createStatusLog("                                            "));
+        container.getChildren().add(createStatusLog("             "));
 
         getChildren().add(container);
 
         populateFields();
 
+        myModel.subscribe("UpdateStatusMessage", this);
     }
 
-    private Node createTitle () //create title container
+    private Node createTitle()
     {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" BROCKPORT TREE SYSTEM ");
+        Text titleText = new Text(" Find Your Tree Type ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BLACK);
+        titleText.setFill(Color.DARKGREEN);
         container.getChildren().add(titleText);
+
 
         return container;
     }
 
-    private VBox createFormContent () //create main form contents
+    private VBox createFormContent()
     {
         VBox vbox = new VBox(10);
 
@@ -78,61 +85,61 @@ public class SearchScoutView extends View{
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text("Please enter Scout's first name: ");
-        prompt.setWrappingWidth(350);
+        Text prompt = new Text("");
+        prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        Text firstNameLabel = new Text("");
+        Text label = new Text(" Tree Type Bar Code Prefix: ");
         Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
-        firstNameLabel.setFont(myFont);
-        grid.add(firstNameLabel, 0, 1);
+        label.setFont(myFont);
+        label.setWrappingWidth(150);
+        label.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(label, 0, 1);
 
-        firstNameInput = new TextField();
-        firstNameInput.setEditable(true);
-        firstNameInput.setOnAction(new EventHandler<ActionEvent>() {
+        treeTypeBarCode = new TextField();
+        treeTypeBarCode.setEditable(true);
+        treeTypeBarCode.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("ScoutNameEntered", firstNameInput.getText());
+                System.out.println("ABC");
+                myModel.stateChangeRequest("TreeTypeBarCodePrefixEntered", treeTypeBarCode.getText());
             }
         });
+        grid.add(treeTypeBarCode, 1, 1);
 
-        grid.add(firstNameInput, 1, 1);
-
-        HBox doneCont = new HBox(10);
-        doneCont.setAlignment(Pos.CENTER);
-        submitButton = new Button("Submit");
+        submitButton = new Button("Find Tree Type");
         submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
-                //System.out.println("Anh and Liz get here -- annoying -- 1");
                 clearErrorMessage();
-                String nameValue = firstNameInput.getText();
-                // DEBUG
-                // System.out.println("Anh and Liz get here -- annoying -- 2");
-                myModel.stateChangeRequest("ScoutSearch",nameValue);
 
-
+                String barcode = treeTypeBarCode.getText();
+                //Scout temp = new Scout(props);
+                // temp.update();
+                // displayMessage("Insert Scout Successfully"); //Use stateChangeRequest method instead of temp
+                myModel.stateChangeRequest("TreeTypeBarCodePrefixEntered", barcode);
             }
         });
+        HBox doneCont = new HBox();
         doneCont.getChildren().add(submitButton);
 
-        cancelButton = new Button("Back");
-        cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+        doneButton = new Button("Back");
+        doneButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        doneButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelSearchScouts", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
-        doneCont.getChildren().add(cancelButton);
+        doneCont.getChildren().add(doneButton);
 
         vbox.getChildren().add(grid);
         vbox.getChildren().add(doneCont);
@@ -140,8 +147,6 @@ public class SearchScoutView extends View{
         return vbox;
     }
 
-    // Create the status log field
-    //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
     {
         statusLog = new MessageView(initialMessage);
@@ -149,19 +154,24 @@ public class SearchScoutView extends View{
         return statusLog;
     }
 
-    //-------------------------------------------------------------
     public void populateFields()
     {
-        //do something
+
     }
 
-    /**
-     * Update method
-     */
-    //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-        //do something
+
+        if (key.equals("TransactionError") == true)
+        {
+            String val = (String)value;
+            if ((val.startsWith("Err")) || (val.startsWith("ERR"))) {
+                displayErrorMessage(val);
+            }
+            else {
+                displayMessage(val);
+            }
+        }
     }
 
     /**
@@ -192,6 +202,3 @@ public class SearchScoutView extends View{
     }
 
 }
-
-//---------------------------------------------------------------
-//	Revision History:

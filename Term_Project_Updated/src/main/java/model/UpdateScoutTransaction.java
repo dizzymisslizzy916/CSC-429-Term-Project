@@ -11,21 +11,20 @@ import java.util.Vector;
 import event.Event;
 import exception.InvalidPrimaryKeyException;
 
-import userinterface.ScoutTableModel;
 import userinterface.View;
 import userinterface.ViewFactory;
+import userinterface.ScoutTableModel;
 
 
 /** The class containing the WithdrawTransaction for the ATM application */
 //==============================================================
-public class SearchScoutTransaction extends Transaction
+public class UpdateScoutTransaction extends Transaction
 {
-    private Scout selectedScout; // needed for GUI only
-
-    // GUI Components
+    private Scout selectedScout;
 
     private String transactionErrorMessage = "";
     private ScoutCollection scoutCollection;
+    private String scoutUpdateMessage = "";
 
     /**
      * Constructor for this class.
@@ -33,7 +32,7 @@ public class SearchScoutTransaction extends Transaction
      *
      */
     //----------------------------------------------------------
-    public SearchScoutTransaction()
+    public UpdateScoutTransaction()
             throws Exception
     {
         super();
@@ -44,10 +43,8 @@ public class SearchScoutTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-//        dependencies.setProperty("ScoutData", "TransactionError");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("ScoutSearch","TransactionError");
-        dependencies.setProperty("CancelSearchScouts","CancelTransaction");
+        dependencies.setProperty("UpdateScout","ScoutUpdateMessage");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -57,15 +54,27 @@ public class SearchScoutTransaction extends Transaction
      * verifying ownership, crediting, etc. etc.
      */
     //----------------------------------------------------------
-    public void processTransaction(String fName) {
-        try {
-            scoutCollection.findScoutsWithNameLike(fName);
-        }
-        catch (Exception excep)
-        {
-            transactionErrorMessage = "ERROR: No scouts found!";
+    public void processTransaction(Properties p) {
+        String lastNameInput = p.getProperty("lastName");
+        selectedScout.stateChangeRequest("lastName", lastNameInput);
+        String firstNameInput = p.getProperty("firstName");
+        selectedScout.stateChangeRequest("firstName", firstNameInput);
+        String middleNameInput = p.getProperty("middleName");
+        selectedScout.stateChangeRequest("middleName", middleNameInput);
+        String dateOfBirthInput = p.getProperty("dateOfBirth");
+        selectedScout.stateChangeRequest("dateOfBirth", dateOfBirthInput);
+        String phoneNumberInput = p.getProperty("phoneNumber");
+        selectedScout.stateChangeRequest("phoneNumber", phoneNumberInput);
+        String emailInput = p.getProperty("email");
+        selectedScout.stateChangeRequest("email", emailInput);
+//        String dateStatusInput = p.getProperty("dateStatusUpdated");
+//        selectedScout.persistentState.setProperty("dateStatusUpdated", dateStatusInput);
 
-        }
+        selectedScout.update();
+
+        scoutUpdateMessage = "Scout updated successfully!";
+
+
     }
 
     //-----------------------------------------------------------
@@ -82,18 +91,10 @@ public class SearchScoutTransaction extends Transaction
         else if (key.equals("SelectedScout") == true) {
             return selectedScout;
         }
-        else if (selectedScout != null) {
-            Object val = selectedScout.getState(key);
-            if (val != null) {
-                return val;
-            }
+        else if (key.equals("ScoutUpdateMessage") == true) {
+            return scoutUpdateMessage;
         }
-        else if (scoutCollection != null) {
-            Object val = scoutCollection.getState(key);
-            if (val != null) {
-                return val;
-            }
-        }
+
 
         return null;
     }
@@ -109,24 +110,40 @@ public class SearchScoutTransaction extends Transaction
         else
         if (key.equals("ScoutSearch") == true)
         {
-            processTransaction((String)value);
-            createAndShowScoutCollectionView();
+            String nameSent = (String)value;
+            try {
+                scoutCollection.findScoutsWithNameLike(nameSent);
+                createAndShowScoutCollectionView();
+            }
+            catch (Exception ex)
+            {
+                transactionErrorMessage = "ERROR: No scouts found!";
+            }
+
         }
         else if (key.equals("ScoutSelected") == true) {
-            String scoutId = (String)value;
-            selectedScout = scoutCollection.retrieve(scoutId);
-            //DO SOMETHING TO UPDATE THE SCOUT
+            selectedScout = scoutCollection.retrieveByTroopId((String)value);
+            createAndShowUpdateScoutView();
+        }
+        else if (key.equals("UpdateScout") == true) {
+            processTransaction((Properties)value);
         }
 
 
         myRegistry.updateSubscribers(key, this);
     }
 
-
     //-----------------------------------------------------
     protected void createAndShowScoutCollectionView()
     {
         View v = ViewFactory.createView("ScoutCollectionView", this);
+        Scene newScene = new Scene(v);
+
+        swapToView(newScene);
+    }
+
+    protected void createAndShowUpdateScoutView() {
+        View v = ViewFactory.createView("UpdateScoutView", this);
         Scene newScene = new Scene(v);
 
         swapToView(newScene);

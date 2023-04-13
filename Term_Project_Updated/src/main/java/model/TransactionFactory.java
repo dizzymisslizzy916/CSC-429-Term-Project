@@ -35,6 +35,21 @@ public class TransactionFactory
 		{
 			retValue = new SearchScoutTransaction();
 		}
+		else if (transType.equals("UpdateScout") == true) {
+			retValue = new UpdateScoutTransaction();
+		}
+		else if (transType.equals("UpdateTree") == true)
+		{
+			retValue = new UpdateTreeTransaction();
+		}
+		else if (transType.equals("UpdateTreeType") == true)
+		{
+			retValue = new UpdateTreeTypeTransaction();
+		}
+		else if (transType.equals("DeleteScout") == true)
+		{
+			retValue = new DeleteScoutTransaction();
+		}
 
 
 		return retValue;
