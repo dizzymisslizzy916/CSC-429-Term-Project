@@ -30,7 +30,7 @@ public class Scout extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
-    public Scout(String troopId) //quey with troopId, not scoutId- see sequence diagrams
+    public Scout(String troopId) //query with troopId, not scoutId- see sequence diagrams
             throws InvalidPrimaryKeyException
     {
         super(myTableName);

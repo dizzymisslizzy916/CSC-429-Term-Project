@@ -43,10 +43,9 @@ public class ViewFactory {
 		else if (viewName.equals("UpdateTreeTypeView") == true) {
 			return new UpdateTreeTypeView(model);
 		}
-		else if (viewName.equals("DeleteScoutView") == true) {
+		else if (viewName.equals("DeleteScoutConfirmView") == true) {
 			return new DeleteScoutConfirmView(model);
 		}
-
 
 
 

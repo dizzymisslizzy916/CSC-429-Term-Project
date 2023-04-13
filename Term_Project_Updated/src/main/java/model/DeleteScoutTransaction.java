@@ -69,10 +69,17 @@ public class DeleteScoutTransaction extends Transaction
 		//selectedScout.update();
 
 		System.out.println("Process Transaction");
-        	//scoutCollection.findScoutsWithNameLike(statusValue);
-		System.out.println("Scouts searched properly");
-        	createAndShowScoutCollectionView();
-		System.out.println("After create scout collection view");
+		try {
+			scoutCollection.findScoutsWithNameLike(statusValue);
+			System.out.println("Scouts searched properly");
+			createAndShowScoutCollectionView();
+			System.out.println("After create scout collection view");
+
+		}
+		catch (Exception excep)
+		{
+			transactionErrorMessage = "ERROR: No Scouts Found!";
+		}
 
 
 	}

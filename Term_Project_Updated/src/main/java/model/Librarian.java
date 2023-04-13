@@ -140,6 +140,9 @@ public class Librarian implements IView, IModel
             doTransaction(transType);
 
         }
+        else if (key.equals("DeleteScout") == true) {
+            doTransaction(key);
+        }
 
         myRegistry.updateSubscribers(key, this);
     }
