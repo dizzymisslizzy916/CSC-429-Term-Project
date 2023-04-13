@@ -120,7 +120,15 @@ public class DeleteScoutTransaction extends Transaction
 		else
 		if (key.equals("ScoutSearch") == true)
 		{
-			processTransaction((String)value);
+			String nameSent = (String)value;
+			try {
+				scoutCollection.findScoutsWithNameLike(nameSent);
+				createAndShowScoutCollectionView();
+			}
+			catch (Exception ex)
+			{
+				transactionErrorMessage = "ERROR: No scouts found!";
+			}
 		}
 		else if (key.equals("ScoutSelected") == true) {
 			System.out.println("Selected Scout in DeleteScoutTransaction");

@@ -276,6 +276,12 @@ public class UpdateScoutView extends View
                     }
                 }
 
+                //Name length check
+                if (lastNameInput.length() > 15 || firstNameInput.length() > 15) {
+                    displayErrorMessage("ERROR: Name may not exceed 15 characters.");
+                    return;
+                }
+
                 props.setProperty("lastName",lastNameInput);
                 props.setProperty("firstName",firstNameInput);
                 props.setProperty("middleName",middleNameInput);

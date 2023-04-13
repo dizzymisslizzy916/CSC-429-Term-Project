@@ -212,12 +212,11 @@ public class InsertScoutView extends View
                 String troopIdInput = troopId.getText();
 
                 //Email must contain @
-                if((emailInput == null) || (emailInput.length() == 0)) {
+                if ((emailInput == null) || (emailInput.length() == 0)) {
                     displayMessage("ERROR: Please enter a valid email.");
                     return;
-                }
-                else if (!emailInput.contains("@")) {
-                    displayErrorMessage("ERROR: Please enter a valid email /n in the form xxx@xxx.xxx");
+                } else if (!emailInput.contains("@")) {
+                    displayErrorMessage("ERROR: Please enter a valid email");
                     return;
                 }
 
@@ -225,17 +224,13 @@ public class InsertScoutView extends View
                 if ((troopIdInput == null) || (troopIdInput.length() == 0)) {
                     displayErrorMessage("Error: Please enter a valid troopId");
                     return;
-                }
-                else if (troopIdInput.length() != 5) {
+                } else if (troopIdInput.length() != 5) {
                     displayErrorMessage("ERROR: Please enter a 5-digit troopId");
                     return;
-                }
-                else {
+                } else {
                     try {
                         Long.parseLong(troopIdInput);
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         displayErrorMessage("ERROR: TroopId must have only digits");
                         return;
                     }
@@ -243,7 +238,7 @@ public class InsertScoutView extends View
 
                 //Check Date of Birth
                 if (!dateOfBirthInput.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                    displayErrorMessage("ERROR: Date of Birth input is not valid /n should be in YYYY-MM-DD");
+                    displayErrorMessage("ERROR: Invalid date of birth format");
                     return;
                 }
 
@@ -252,22 +247,24 @@ public class InsertScoutView extends View
                 if ((phoneNumberInput == null) || (phoneNumberInput.length() == 0)) {
                     displayErrorMessage("ERROR: Please enter a 10-digit phone number");
                     return;
-                }
-                else if (phoneNumberInput.length() != 10) {
-                        displayErrorMessage("ERROR: Please enter a 10-digit phone number");
+                } else if (phoneNumberInput.length() != 10) {
+                    displayErrorMessage("ERROR: Please enter a 10-digit phone number");
+                    return;
+                } else {
+                    try {
+                        Long.parseLong(phoneNumberInput);
+                    } catch (Exception ex) {
+                        displayErrorMessage("ERROR: Phone number must have only digits");
                         return;
-                }
-                else {
-                        try {
-                            Long.parseLong(phoneNumberInput);
-                        }
-                        catch (Exception ex)
-                        {
-                            displayErrorMessage("ERROR: Phone number must have only digits");
-                            return;
-                        }
-
                     }
+                }
+                //Name length check
+                if (lastNameInput.length() > 15 || firstNameInput.length() > 15) {
+                    displayErrorMessage("ERROR: Name may not exceed 15 characters.");
+                    return;
+                }
+
+
 
                 props.setProperty("lastName",lastNameInput);
                 props.setProperty("firstName",firstNameInput);
@@ -277,7 +274,9 @@ public class InsertScoutView extends View
                 props.setProperty("email",emailInput);
                 props.setProperty("troopId",troopIdInput);
 
+
                 myModel.stateChangeRequest("ScoutData", props);
+                //myModel.getState("TransactionError"); for displaying transactionErrorMessage?
 
             }
         });
