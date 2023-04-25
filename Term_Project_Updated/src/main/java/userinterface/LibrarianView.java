@@ -51,6 +51,7 @@ public class LibrarianView extends View {
     private Button updateTreeButton;
     private Button updateTreeTypeButton;
     private Button removeScoutButton;
+    private Button endShiftButton;
     private Button doneButton;
     protected MessageView statusLog;
 
@@ -152,6 +153,13 @@ public class LibrarianView extends View {
 
         });
         grid.add(removeScoutButton, 6, 0);
+
+        endShiftButton = new Button("End A Shift");
+        endShiftButton.setOnAction ((ActionEvent e) -> {
+            myModel.stateChangeRequest("EndShift", null);
+
+        });
+        grid.add(endShiftButton, 7, 0);
 
         doneButton = new Button("Done");
         doneButton.setOnAction(new EventHandler<ActionEvent>() {
