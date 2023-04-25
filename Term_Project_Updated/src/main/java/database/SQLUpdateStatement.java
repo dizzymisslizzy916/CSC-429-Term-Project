@@ -134,7 +134,8 @@ public class SQLUpdateStatement extends SQLStatement
 		
 		theSQLStatement += ";";
 		
-		// DEBUG System.out.println("SQL Query Statement = " + theSQLStatement);
+		// DEBUG
+		System.out.println("SQL Query Statement = " + theSQLStatement);
 		
 	}
 }
