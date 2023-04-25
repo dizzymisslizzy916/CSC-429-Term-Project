@@ -127,6 +127,7 @@ public class DeleteScoutTransaction extends Transaction
 		else
 		if (key.equals("ScoutSearch") == true)
 		{
+
 			processTransaction((String)value);
 		}
 		else if (key.equals("ScoutSelected") == true) {

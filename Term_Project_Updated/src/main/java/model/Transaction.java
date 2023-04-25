@@ -69,7 +69,7 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{
-
+		System.out.println("we're in doYourJob");
 		try
 		{
 			
@@ -81,6 +81,7 @@ abstract public class Transaction implements IView, IModel
 		}
 		catch (Exception ex)
 		{
+			ex.printStackTrace();
 				new Event(Event.getLeafLevelClassName(this), "Transaction",
 					"Could not find any accounts for" , Event.ERROR);
 		}

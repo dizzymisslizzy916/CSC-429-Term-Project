@@ -16,11 +16,11 @@ import impresario.IView;
 
 
 
-/** The class containing the Shift */
+/** The class containing the Sale Transaction */
 //==============================================================
-public class Shift extends EntityBase implements IView
+public class SaleTransaction extends EntityBase implements IView
 {
-    private static final String myTableName = "Shift";
+    private static final String myTableName = "Transaction";
 
     protected Properties dependencies;
 
@@ -28,17 +28,15 @@ public class Shift extends EntityBase implements IView
 
     private String updateStatusMessage = "";
 
-    private boolean oldFlag = true;
-
     // constructor for this class
     //----------------------------------------------------------
-    public Shift(String Id)
+    public SaleTransaction(String transId) //query with id- see sequence diagrams
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (Id = '" + Id + "')";
+        String query = "SELECT * FROM " + myTableName + " WHERE (transactionId = " + transId + ")";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -50,21 +48,21 @@ public class Shift extends EntityBase implements IView
             // There should be EXACTLY one account. More than that is an error
             if (size != 1)
             {
-                throw new InvalidPrimaryKeyException("Multiple shift matching Id : "
-                        + Id + " found.");
+                throw new InvalidPrimaryKeyException("Multiple transactions matching id : "
+                        + transId + " found.");
             }
             else
             {
                 // copy all the retrieved data into persistent state
-                Properties retrievedAccountData = allDataRetrieved.elementAt(0);
+                Properties retrievedTransData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
 
-                Enumeration allKeys = retrievedAccountData.propertyNames();
+                Enumeration allKeys = retrievedTransData.propertyNames();
                 while (allKeys.hasMoreElements() == true)
                 {
                     String nextKey = (String)allKeys.nextElement();
-                    String nextValue = retrievedAccountData.getProperty(nextKey);
-
+                    String nextValue = retrievedTransData.getProperty(nextKey);
+                    // scoutId = Integer.parseInt(retrievedAccountData.getProperty("scoutId"));
 
                     if (nextValue != null)
                     {
@@ -74,18 +72,17 @@ public class Shift extends EntityBase implements IView
 
             }
         }
-        // If no account found for this user name, throw an exception
+        // If no transaction found for this id, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No Shift matching Id : "
-                    + Id + " found.");
+            throw new InvalidPrimaryKeyException("No transactions matching id : "
+                    + transId + " found.");
         }
     }
 
-    // Can also be used to create a NEW Account (if the system it is part of
-    // allows for a new account to be set up)
+    // Can also be used to create a NEW Transaction
     //----------------------------------------------------------
-    public Shift(Properties props)
+    public SaleTransaction(Properties props)
     {
         super(myTableName);
 
@@ -102,12 +99,6 @@ public class Shift extends EntityBase implements IView
                 persistentState.setProperty(nextKey, nextValue);
             }
         }
-    }
-
-    //-----------------------------------------------------------------------------------
-    public void setOldFlag(boolean val)
-    {
-        oldFlag = val;
     }
 
     //-----------------------------------------------------------------------------------
@@ -150,40 +141,39 @@ public class Shift extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase()
     {
+        System.out.println("Trying to save transaction in db");
         try
         {
-            if (oldFlag == true)
+            if (persistentState.getProperty("transactionId") != null)
             {
-                //System.out.println("Getting here - shift update");
+                System.out.println("Trying to update transaction in db");
                 Properties whereClause = new Properties();
-                whereClause.setProperty("Id",
-                        persistentState.getProperty("Id"));
+                whereClause.setProperty("transactionId",
+                        persistentState.getProperty("transactionId"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                //System.out.println("Getting here - finished updating tree");
-                updateStatusMessage = "Shift with Id: " + persistentState.getProperty("Id") + " updated successfully in database!";
+                updateStatusMessage = "Transaction updated successfully in database!";
             }
+
             else
             {
-                //System.out.println("Getting here 1");
-                insertPersistentState(mySchema, persistentState);
-                oldFlag = true;
-                updateStatusMessage = "Shift with Id: " +  persistentState.getProperty("Id")
-                        + "installed successfully in database!";
+                System.out.println("Trying to insert transaction in db");
+                Integer trID =
+                        insertAutoIncrementalPersistentState(mySchema, persistentState);
+                persistentState.setProperty("transactionId", "" + trID.intValue());
+                updateStatusMessage = "Transaction added successfully to database!";
             }
         }
         catch (SQLException ex)
         {
-            //System.out.println("Getting here 2");
             System.out.println(ex);
-            updateStatusMessage = "Error in installing shift in database!";
-
+            ex.printStackTrace();
+            updateStatusMessage = "Error in installing transaction data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
 
     /**
-     * This method is needed solely to enable the Account information to be displayable in a table
+     * This method is needed solely to enable the Transaction information to be displayable in a table
      *
      */
     //--------------------------------------------------------------------------
@@ -191,30 +181,28 @@ public class Shift extends EntityBase implements IView
     {
         Vector<String> v = new Vector<String>();
 
-        //v.addElement(persistentState.getProperty("Id"));
-        //v.addElement(persistentState.getProperty("sessionId"));
-        v.addElement(persistentState.getProperty("scoutId"));
-        v.addElement(persistentState.getProperty("companionName"));
-        v.addElement(persistentState.getProperty("startTime"));
-        v.addElement(persistentState.getProperty("endTime"));
-        v.addElement(persistentState.getProperty("companionHours"));
+        //v.addElement(persistentState.getProperty("scoutId"));
+        v.addElement(persistentState.getProperty("transactionType"));
+        v.addElement(persistentState.getProperty("barCode"));
+
+
 
         return v;
     }
 
     //-----------------------------------------------------------------------------------
-    public String toString() {
-        return "Shift Id " + persistentState.getProperty("Id") + "; ScoutId: " +
-                persistentState.getProperty("scoutId") + "; Start Time " +
-                persistentState.getProperty("startTime");
-    }
+    //public String toString() {
+    //    return "";
+    //}
 
-    public static int compare(Shift a, Shift b) {
-        String aNum = (String)a.getState("Id");
-        String bNum = (String)b.getState("Id");
+    public static int compare(SaleTransaction a, SaleTransaction b) {
+        String aNum = (String)a.getState("transactionId");
+        String bNum = (String)b.getState("transactionId");
 
         return aNum.compareTo(bNum);
     }
+
+    //----------------------------------------------------------------------------------------
     protected void initializeSchema(String tableName)
     {
         if (mySchema == null)
@@ -223,4 +211,3 @@ public class Shift extends EntityBase implements IView
         }
     }
 }
-

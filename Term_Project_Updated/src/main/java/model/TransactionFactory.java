@@ -50,6 +50,9 @@ public class TransactionFactory
 		{
 			retValue = new DeleteScoutTransaction();
 		}
+		else if (transType.equals("EndShift") == true) {
+			retValue = new EndShiftTransaction();
+		}
 
 
 		return retValue;

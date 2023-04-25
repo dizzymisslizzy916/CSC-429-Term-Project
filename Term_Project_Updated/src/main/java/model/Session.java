@@ -16,11 +16,11 @@ import impresario.IView;
 
 
 
-/** The class containing the Shift */
+/** The class containing the Session */
 //==============================================================
-public class Shift extends EntityBase implements IView
+public class Session extends EntityBase implements IView
 {
-    private static final String myTableName = "Shift";
+    private static final String myTableName = "Session";
 
     protected Properties dependencies;
 
@@ -28,11 +28,14 @@ public class Shift extends EntityBase implements IView
 
     private String updateStatusMessage = "";
 
-    private boolean oldFlag = true;
-
     // constructor for this class
     //----------------------------------------------------------
-    public Shift(String Id)
+    public Session()
+    {
+        super(myTableName);
+        setDependencies();
+    }
+    public Session(String Id)
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
@@ -50,7 +53,7 @@ public class Shift extends EntityBase implements IView
             // There should be EXACTLY one account. More than that is an error
             if (size != 1)
             {
-                throw new InvalidPrimaryKeyException("Multiple shift matching Id : "
+                throw new InvalidPrimaryKeyException("Multiple Session matching : "
                         + Id + " found.");
             }
             else
@@ -64,7 +67,7 @@ public class Shift extends EntityBase implements IView
                 {
                     String nextKey = (String)allKeys.nextElement();
                     String nextValue = retrievedAccountData.getProperty(nextKey);
-
+                    // Id = Integer.parseInt(retrievedAccountData.getProperty("Id"));
 
                     if (nextValue != null)
                     {
@@ -77,7 +80,7 @@ public class Shift extends EntityBase implements IView
         // If no account found for this user name, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No Shift matching Id : "
+            throw new InvalidPrimaryKeyException("No Session matching Id : "
                     + Id + " found.");
         }
     }
@@ -85,7 +88,7 @@ public class Shift extends EntityBase implements IView
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-    public Shift(Properties props)
+    public Session(Properties props)
     {
         super(myTableName);
 
@@ -104,10 +107,48 @@ public class Shift extends EntityBase implements IView
         }
     }
 
-    //-----------------------------------------------------------------------------------
-    public void setOldFlag(boolean val)
-    {
-        oldFlag = val;
+    public void findOpenSession() throws InvalidPrimaryKeyException {
+        setDependencies();
+        String query = "SELECT * FROM " + myTableName + " WHERE (endTime IS NULL) OR (endTime = '')";
+
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        // You must get one account at least
+        if (allDataRetrieved != null)
+        {
+            int size = allDataRetrieved.size();
+            System.out.println("size: " + size);
+            // There should be EXACTLY one account. More than that is an error
+            if (size != 1)
+            {
+                throw new InvalidPrimaryKeyException("Multiple Session found");
+            }
+            else
+            {
+                // copy all the retrieved data into persistent state
+                Properties retrievedAccountData = allDataRetrieved.elementAt(0);
+                persistentState = new Properties();
+
+                Enumeration allKeys = retrievedAccountData.propertyNames();
+                while (allKeys.hasMoreElements() == true)
+                {
+                    String nextKey = (String)allKeys.nextElement();
+                    String nextValue = retrievedAccountData.getProperty(nextKey);
+                    // Id = Integer.parseInt(retrievedAccountData.getProperty("Id"));
+
+                    if (nextValue != null)
+                    {
+                        persistentState.setProperty(nextKey, nextValue);
+                    }
+                }
+
+            }
+        }
+        // If no account found for this user name, throw an exception
+        else
+        {
+            throw new InvalidPrimaryKeyException("No Session found.");
+        }
     }
 
     //-----------------------------------------------------------------------------------
@@ -130,7 +171,7 @@ public class Shift extends EntityBase implements IView
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-        persistentState.setProperty(key, (String)value);
+        persistentState.setProperty(key, value.toString());
         myRegistry.updateSubscribers(key, this);
     }
 
@@ -152,31 +193,26 @@ public class Shift extends EntityBase implements IView
     {
         try
         {
-            if (oldFlag == true)
+            if (persistentState.getProperty("Id") != null)
             {
-                //System.out.println("Getting here - shift update");
                 Properties whereClause = new Properties();
                 whereClause.setProperty("Id",
                         persistentState.getProperty("Id"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                //System.out.println("Getting here - finished updating tree");
-                updateStatusMessage = "Shift with Id: " + persistentState.getProperty("Id") + " updated successfully in database!";
+                updateStatusMessage = "Id: " + persistentState.getProperty("Id") + " updated successfully in database!";
             }
             else
             {
-                //System.out.println("Getting here 1");
-                insertPersistentState(mySchema, persistentState);
-                oldFlag = true;
-                updateStatusMessage = "Shift with Id: " +  persistentState.getProperty("Id")
-                        + "installed successfully in database!";
+                Integer treetypeId =
+                        insertAutoIncrementalPersistentState(mySchema, persistentState);
+                persistentState.setProperty("Id", "" + treetypeId);
+                updateStatusMessage = "Id for new Tree Type: " +  persistentState.getProperty("Id")
+                        + " installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
-            //System.out.println("Getting here 2");
-            System.out.println(ex);
-            updateStatusMessage = "Error in installing shift in database!";
-
+            updateStatusMessage = "Error in installing Tree Type data in database!";
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
@@ -191,25 +227,26 @@ public class Shift extends EntityBase implements IView
     {
         Vector<String> v = new Vector<String>();
 
-        //v.addElement(persistentState.getProperty("Id"));
-        //v.addElement(persistentState.getProperty("sessionId"));
-        v.addElement(persistentState.getProperty("scoutId"));
-        v.addElement(persistentState.getProperty("companionName"));
+        v.addElement(persistentState.getProperty("Id"));
+        v.addElement(persistentState.getProperty("startDate"));
+        v.addElement(persistentState.getProperty("endDate"));
         v.addElement(persistentState.getProperty("startTime"));
         v.addElement(persistentState.getProperty("endTime"));
-        v.addElement(persistentState.getProperty("companionHours"));
+        v.addElement(persistentState.getProperty("startingCash"));
+        v.addElement(persistentState.getProperty("endingCash"));
+        v.addElement(persistentState.getProperty("notes"));
 
         return v;
     }
 
     //-----------------------------------------------------------------------------------
     public String toString() {
-        return "Shift Id " + persistentState.getProperty("Id") + "; ScoutId: " +
-                persistentState.getProperty("scoutId") + "; Start Time " +
-                persistentState.getProperty("startTime");
+        return "Session Description " + persistentState.getProperty("Id") +
+                ", Start Date: " + persistentState.getProperty("startDate") +
+                "; Starting Cash: " + persistentState.getProperty("startingCash");
     }
 
-    public static int compare(Shift a, Shift b) {
+    public static int compare(Session a, Session b) {
         String aNum = (String)a.getState("Id");
         String bNum = (String)b.getState("Id");
 
@@ -222,5 +259,9 @@ public class Shift extends EntityBase implements IView
             mySchema = getSchemaInfo(tableName);
         }
     }
+
+
 }
+
+
 
