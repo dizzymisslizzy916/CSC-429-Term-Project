@@ -28,6 +28,7 @@ public class EndShiftTransaction extends Transaction
     private Session selectedSession; // needed for GUI only
     private String transactionErrorMessage = "";
     private SaleTransactionCollection salesCollection;
+    private ShiftCollection selectedShifts;
 
     private double endingCashVal = 0;
     private double totalCheckVal = 0;
@@ -39,22 +40,17 @@ public class EndShiftTransaction extends Transaction
         super();
         System.out.println("test");
         selectedSession = new Session();
+        selectedShifts = new ShiftCollection();
         try {
             selectedSession.findOpenSession();
-            System.out.println("test1");
+            selectedShifts.findOpenShifts(selectedSession);
             String startingCashVal = (String)selectedSession.getState("startingCash");
-            System.out.println("test2");
             double startingCash = Double.parseDouble(startingCashVal);
-            System.out.println("test3");
             salesCollection= new SaleTransactionCollection();
-            System.out.println("test4");
             salesCollection.findTransactionsForSession((String)selectedSession.getState("Id"));
-            System.out.println("test5");
             Vector<SaleTransaction> transList = (Vector) salesCollection.getState("Transaction");
-            System.out.println("test6");
             AtomicReference<Double> transactionCheck = new AtomicReference<>((double) 0);
             AtomicReference<Double> transactionCash = new AtomicReference<>((double) 0);
-            System.out.println("list size" + transList.size());
             transList.forEach(e -> {
                 System.out.println("element: " + e);
                 int addedMoney = Integer.parseInt(e.persistentState.getProperty("transactionAmount"));
@@ -108,15 +104,24 @@ public class EndShiftTransaction extends Transaction
         }
     }
 
-    public void processTransaction(String notes) {
+    public void processTransaction() {
 
         try {
             selectedSession.stateChangeRequest("endingCash", endingCashVal);
             selectedSession.stateChangeRequest("totalCheckTransactionAmount", totalCheckVal);
-            selectedSession.stateChangeRequest("notes", notes);
-            DateFormat timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
+            DateFormat timeStamp = new SimpleDateFormat("yyyy/MM/dd_hh:mm a");
+
             Date date = new Date();
             System.out.println(timeStamp.format(date));
+            String[] split = timeStamp.format(date).split("_");
+            String endDate = split[0];
+            String endTime = split[1];
+
+
+
+            selectedSession.stateChangeRequest("endDate", endDate);
+            selectedSession.stateChangeRequest("endTime", endTime);
+
             //selectedSession.update();
             sessionUpdateStatusMessage = "Successfully End A Shift";
         }
@@ -129,7 +134,17 @@ public class EndShiftTransaction extends Transaction
 
     public void processTransaction2(String notes)
     {
+        DateFormat timeStamp = new SimpleDateFormat("yyyy/MM/dd_hh:mm a");
+
+        Date date = new Date();
+        String[] split = timeStamp.format(date).split("_");
+        String endTime = split[1];
         selectedSession.persistentState.setProperty("notes", notes);
+        Vector<Shift> shiftList = (Vector<Shift>) selectedShifts.getState("Shift");
+        shiftList.forEach(shift -> {
+            shift.stateChangeRequest("endTime", endTime);
+            shift.update();
+        });
         selectedSession.update();
         sessionUpdateStatusMessage = "Session updated successfully!";
 
@@ -157,13 +172,18 @@ public class EndShiftTransaction extends Transaction
         switch(key) {
             case "DoYourJob":
                 doYourJob();
+                break;
             case "SalesConfirmView":
-                //processTransaction();
                 createAndShowSaleConfirmView();
-            case "EnterShiftNotesView":
+                break;
+            case "EnterShiftNotesView": {
                 createAndShowEnterShiftNotesView();
+                break;
+            }
             case "SubmitNotes":
+                processTransaction();
                 processTransaction2((String)value);
+                break;
         }
         myRegistry.updateSubscribers(key, this);
 
@@ -186,21 +206,15 @@ public class EndShiftTransaction extends Transaction
 
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("SalesConfirmView");
+        System.out.println("In EndShiftTransaction - create view");
 
-        if (currentScene == null)
-        {
-            // create our new view
-            View newView = ViewFactory.createView("SalesConfirmView", this);
-            currentScene = new Scene(newView);
-            myViews.put("SalesConfirmView", currentScene);
+        // create our new view
+        View newView = ViewFactory.createView("SalesConfirmView", this);
+        Scene currentScene = new Scene(newView);
 
-            return currentScene;
-        }
-        else
-        {
-            return currentScene;
-        }
+        System.out.println("In EndShiftTransaction - scene created");
+        return currentScene;
+
     }
 
 //------------------------------------------------------

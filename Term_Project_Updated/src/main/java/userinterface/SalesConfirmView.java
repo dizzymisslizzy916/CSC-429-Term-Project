@@ -18,7 +18,6 @@ public class SalesConfirmView extends View {
     protected MessageView statusLog;
     public SalesConfirmView(IModel model) {
         super(model, "SalesConfirmView");
-
         File fxmlFile = new File("src/main/resources/userinterface/salesconfirmview.fxml");
 
         Parent root = null;
@@ -29,6 +28,8 @@ public class SalesConfirmView extends View {
             e.printStackTrace();
         }
         handleForm(root);
+
+        System.out.println("SalesConfirmView - end of constructor");
 
         getChildren().add(root);
     }

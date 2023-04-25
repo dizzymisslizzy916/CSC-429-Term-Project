@@ -54,7 +54,22 @@ public class ShiftCollection  extends EntityBase implements IView
         }
     }
     //----------------------------------------------------------------------------------
-
+    public void findOpenShifts(Session session) throws InvalidPrimaryKeyException {
+        //setDependencies();
+        String id = (String) session.getState("Id");
+        String query = "SELECT * FROM " + myTableName + " WHERE (sessionId = '" + id + "')";
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+        if (allDataRetrieved != null) {
+            int size = allDataRetrieved.size();
+            if (size == 0) {
+                throw new InvalidPrimaryKeyException("No Shifts Found");
+            } else {
+                allDataRetrieved.forEach(e -> {
+                    shiftList.add(new Shift(e));
+                });
+            }
+        }
+    }
 
     //----------------------------------------------------------------------------------
     public void addShift(Shift b)

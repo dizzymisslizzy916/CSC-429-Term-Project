@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import Utilities.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +32,9 @@ public class EnterShiftNotesView extends View {
 
         createStatusLog("                  ");
 
-        container.getChildren().add(statusLog);
         container.getChildren().add(root);
+        container.getChildren().add(statusLog);
+
 
         getChildren().add(container);
     }
@@ -41,6 +43,7 @@ public class EnterShiftNotesView extends View {
         TextArea notes = (TextArea) root.lookup("#notes");
         Button submit = (Button) root.lookup("#submit");
         Button done = (Button) root.lookup("#done");
+        UIUtils.limitLength(notes, 200);
 
         done.setOnAction(e -> {
             myModel.stateChangeRequest("CancelTransaction", null);

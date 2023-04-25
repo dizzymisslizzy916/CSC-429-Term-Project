@@ -119,7 +119,7 @@ public class Session extends EntityBase implements IView
             int size = allDataRetrieved.size();
             System.out.println("size: " + size);
             // There should be EXACTLY one account. More than that is an error
-            if (size != 1)
+            if (size > 1)
             {
                 throw new InvalidPrimaryKeyException("Multiple Session found");
             }
