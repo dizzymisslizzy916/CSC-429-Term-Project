@@ -50,9 +50,18 @@ public class TransactionFactory
 		{
 			retValue = new DeleteScoutTransaction();
 		}
+		else if (transType.equals("DeleteTree") == true)
+		{
+			retValue = new DeleteTreeTransaction();
+		}
 		else if (transType.equals("EndShift") == true) {
 			retValue = new EndShiftTransaction();
 		}
+		else if (transType.equals("StartSession") == true)
+		{
+			retValue = new StartSessionTransaction();
+		}
+
 
 
 		return retValue;

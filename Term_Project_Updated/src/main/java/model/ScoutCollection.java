@@ -55,10 +55,14 @@ public class ScoutCollection  extends EntityBase implements IView
     }
     //----------------------------------------------------------------------------------
     //methods for pulling SQL result if needed
-
-    //----------------------------------------------------------------------------------
     public void findScoutsWithNameLike(String fName) throws Exception {
         String query = "SELECT * FROM " + myTableName + " WHERE (firstName LIKE '%" + fName + "%')";
+        helper(query);
+    }
+
+    public void findAllScouts() throws Exception {
+        String active = "Active";
+        String query = "SELECT * FROM " + myTableName + " WHERE (status = '" + active + "')";
         helper(query);
     }
     public void addScout(Scout b)

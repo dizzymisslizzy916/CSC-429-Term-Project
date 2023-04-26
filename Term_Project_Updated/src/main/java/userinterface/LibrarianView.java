@@ -51,6 +51,8 @@ public class LibrarianView extends View {
     private Button updateTreeButton;
     private Button updateTreeTypeButton;
     private Button removeScoutButton;
+    private Button removeTreeButton;
+    private Button startShiftButton;
     private Button endShiftButton;
     private Button doneButton;
     protected MessageView statusLog;
@@ -152,14 +154,31 @@ public class LibrarianView extends View {
             myModel.stateChangeRequest("DeleteScout", null);
 
         });
+
         grid.add(removeScoutButton, 6, 0);
+
+        removeTreeButton = new Button("Remove A Tree");
+        removeTreeButton.setOnAction ((ActionEvent e) -> {
+            myModel.stateChangeRequest("DeleteTree", null);
+
+        });
+        grid.add(removeTreeButton, 7, 0);
+
+        startShiftButton = new Button("Start A Shift");
+        startShiftButton.setOnAction ((ActionEvent e) -> {
+            myModel.stateChangeRequest("StartSession", null);
+
+        });
+        grid.add(startShiftButton, 8, 0);
+
+
 
         endShiftButton = new Button("End A Shift");
         endShiftButton.setOnAction ((ActionEvent e) -> {
             myModel.stateChangeRequest("EndShift", null);
 
         });
-        grid.add(endShiftButton, 7, 0);
+        grid.add(endShiftButton, 9, 0);
 
         doneButton = new Button("Done");
         doneButton.setOnAction(new EventHandler<ActionEvent>() {

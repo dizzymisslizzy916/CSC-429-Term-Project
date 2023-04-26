@@ -46,6 +46,15 @@ public class ViewFactory {
 		else if (viewName.equals("DeleteScoutConfirmView") == true) {
 			return new DeleteScoutConfirmView(model);
 		}
+		else if (viewName.equals("DeleteTreeConfirmView") == true) {
+			return new DeleteTreeConfirmView(model);
+		}
+		else if (viewName.equals("SessionInfoView") == true) {
+			return new SessionInfoView(model);
+		}
+		else if (viewName.equals("ShiftInfoEntryView") == true) {
+			return new ShiftInfoEntryView(model);
+		}
 		else if (viewName.equals("SalesConfirmView") == true) {
 			return new SalesConfirmView(model);
 		}

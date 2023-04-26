@@ -134,6 +134,29 @@ public class Tree extends EntityBase implements IView
         myRegistry.updateSubscribers(key, this);
     }
 
+    //----------------------------------------------------------------
+    public void deleteFromDatabase(){
+
+        //I WROTE THIS METHOD ALL BY MYSELF!!! -LIZ
+
+        String status = (String)this.getState("Status"); //get status of this tree from database
+        String barcode = this.persistentState.getProperty("barCode"); //get barcode of this tree from database
+        System.out.println(status + " is the status");
+        try {
+            if (!status.equals("Sold")) { //if this tree is not sold
+                Properties whereValues = new Properties(); //store in temporary Properties object
+                whereValues.setProperty("barCode", persistentState.getProperty("barCode"));
+                deletePersistentState(mySchema, whereValues); //remove that tree from database
+
+                updateStatusMessage = "Tree with barcode: " + barcode
+                        + " removed successfully from database!";
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            updateStatusMessage = "Error in removing tree in database!";
+        }
+    }
+
     /** Called via the IView relationship */
     //----------------------------------------------------------
     public void updateState(String key, Object value)

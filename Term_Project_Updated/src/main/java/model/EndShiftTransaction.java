@@ -134,17 +134,17 @@ public class EndShiftTransaction extends Transaction
 
     public void processTransaction2(String notes)
     {
-        DateFormat timeStamp = new SimpleDateFormat("yyyy/MM/dd_hh:mm a");
-
-        Date date = new Date();
-        String[] split = timeStamp.format(date).split("_");
-        String endTime = split[1];
-        selectedSession.persistentState.setProperty("notes", notes);
-        Vector<Shift> shiftList = (Vector<Shift>) selectedShifts.getState("Shift");
-        shiftList.forEach(shift -> {
-            shift.stateChangeRequest("endTime", endTime);
-            shift.update();
-        });
+//        DateFormat timeStamp = new SimpleDateFormat("yyyy/MM/dd_hh:mm a");
+//
+//        Date date = new Date();
+//        String[] split = timeStamp.format(date).split("_");
+//        String endTime = split[1];
+          selectedSession.persistentState.setProperty("notes", notes);
+//        Vector<Shift> shiftList = (Vector<Shift>) selectedShifts.getState("Shift");
+//        shiftList.forEach(shift -> {
+//            shift.stateChangeRequest("endTime", endTime);
+//            shift.update();
+//        });
         selectedSession.update();
         sessionUpdateStatusMessage = "Session updated successfully!";
 

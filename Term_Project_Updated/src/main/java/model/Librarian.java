@@ -143,6 +143,21 @@ public class Librarian implements IView, IModel
         else if (key.equals("DeleteScout") == true) {
             doTransaction(key);
         }
+
+        else if (key.equals("DeleteTree") == true)
+        {
+            System.out.println(key);
+            String transType = key;
+            doTransaction(transType);
+
+        }
+        else if (key.equals("StartSession") == true)
+        {
+            System.out.println(key);
+            String transType = key;
+            doTransaction(transType);
+        }
+
         else if (key.equals("EndShift") == true) {
             doTransaction(key);
         }
